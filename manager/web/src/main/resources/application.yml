@@ -32,6 +32,10 @@ rustto:
     port: ${NETTY_PORT:9600}
   backup:
     data-dir: ${BACKUP_DATA_DIR:data}
+  init:
+    # 内置管理员种子账号；生产环境请用环境变量覆盖
+    admin-username: ${RUSTTO_INIT_ADMIN_USERNAME:admin}
+    admin-password: ${RUSTTO_INIT_ADMIN_PASSWORD:admin123}
 
 logging:
   file:
