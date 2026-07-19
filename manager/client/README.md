@@ -1,0 +1,43 @@
+# rustto manager 前端（Vue 3）
+
+管理端 Web 界面：登录、节点管理、备份任务、备份记录、二进制版本下发。
+
+## 技术栈
+
+- Vue 3 + Vite 5
+- Vue Router 4、Pinia 2
+- Element Plus
+- Axios
+- ESLint（Airbnb）+ Prettier（对应 AGENT.MD 第 4 节）
+
+## 目录结构
+
+```
+manager/client/
+├── index.html
+├── vite.config.js          # dev 代理 /api -> http://127.0.0.1:8080
+├── .eslintrc.cjs / .prettierrc
+└── src/
+    ├── main.js / App.vue
+    ├── router/index.js     # 登录守卫
+    ├── stores/auth.js      # token 持久化
+    ├── api/                # Axios 封装 + 各模块接口（含 Token 拦截器）
+    └── views/              # Login / Layout / Dashboard / 节点 / 任务 / 记录 / 二进制
+```
+
+## 开发运行
+
+```bash
+npm install
+npm run dev      # http://127.0.0.1:5173（需后端 8080 已启动）
+npm run build    # 产物 dist/
+npm run lint
+```
+
+> 默认账号：`admin` / `admin123`（后端迁移内置）。
+
+## 约定（AGENT.MD 第 4 节）
+
+- 驼峰命名、JSDoc 注释（函数/参数/返回值）
+- 单行 ≤ 280 字符、函数体 ≤ 120 行
+- Prettier + ESLint(Airbnb)

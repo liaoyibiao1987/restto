@@ -1,0 +1,8 @@
+# rustto manager
+
+管理端，包含两个子项目：
+
+- [`web/`](web/) — Spring Boot 后端（RESTful + Netty 服务端 + MySQL）
+- [`client/`](client/) — Vue 3 管理前端
+
+详见各自 README，以及项目根 [`README.md`](../README.md)。

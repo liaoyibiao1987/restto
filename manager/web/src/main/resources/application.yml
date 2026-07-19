@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: rustto-manager
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:rustto}?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: ${DB_USER:dev}
+    password: ${DB_PASSWORD:12345678}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+rustto:
+  jwt:
+    secret: ${JWT_SECRET:rustto-dev-secret-change-me-please-with-32-bytes}
+    expire-minutes: ${JWT_EXPIRE_MINUTES:720}
+  netty:
+    port: ${NETTY_PORT:9600}
+  backup:
+    data-dir: ${BACKUP_DATA_DIR:data}
+
+logging:
+  file:
+    name: logs/rustto.log
+  level:
+    com.rustto: debug
+    org.flywaydb: info

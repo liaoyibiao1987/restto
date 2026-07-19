@@ -1,0 +1,7 @@
+/target
+/logs/*
+!/logs/.gitkeep
+/data/*
+!/data/.gitkeep
+*.log
+.env.local

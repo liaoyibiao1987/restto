@@ -1,0 +1,5 @@
+# 各子项目另有自己的 .gitignore，此处为通用补充
+.DS_Store
+*.iml
+.idea/
+.vscode/
