@@ -3,6 +3,7 @@ package com.rustto.manager.controller;
 import com.rustto.manager.common.PageResult;
 import com.rustto.manager.common.Result;
 import com.rustto.manager.entity.BackupRecord;
+import com.rustto.manager.security.RequirePermission;
 import com.rustto.manager.service.BackupRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/records")
 @RequiredArgsConstructor
+@RequirePermission("backup:record:list")
 public class BackupRecordController {
 
     private final BackupRecordService backupRecordService;

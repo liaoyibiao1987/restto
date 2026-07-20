@@ -6,6 +6,8 @@ import com.rustto.manager.common.Result;
 import com.rustto.manager.common.ResultCode;
 import com.rustto.manager.dto.NodeCreateRequest;
 import com.rustto.manager.entity.BackupNode;
+import com.rustto.manager.security.OperLog;
+import com.rustto.manager.security.RequirePermission;
 import com.rustto.manager.service.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/nodes")
 @RequiredArgsConstructor
+@RequirePermission("backup:node:list")
 public class NodeController {
 
     private final NodeService nodeService;
@@ -36,6 +39,8 @@ public class NodeController {
      * @return 节点
      */
     @PostMapping
+    @RequirePermission("backup:node:create")
+    @OperLog("新增节点")
     public Result<BackupNode> create(@RequestBody @Valid NodeCreateRequest request) {
         return Result.success(nodeService.createNode(request.getNodeName()));
     }
@@ -60,6 +65,7 @@ public class NodeController {
      * @return 节点
      */
     @GetMapping("/{id}")
+    @RequirePermission("backup:node:query")
     public Result<BackupNode> get(@PathVariable Long id) {
         BackupNode node = nodeService.getById(id);
         if (node == null) {
@@ -75,6 +81,8 @@ public class NodeController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @RequirePermission("backup:node:delete")
+    @OperLog("删除节点")
     public Result<Void> delete(@PathVariable Long id) {
         nodeService.removeById(id);
         return Result.success();

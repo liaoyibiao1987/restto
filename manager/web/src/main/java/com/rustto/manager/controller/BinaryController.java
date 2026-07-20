@@ -4,6 +4,8 @@ import com.rustto.manager.common.PageResult;
 import com.rustto.manager.common.Result;
 import com.rustto.manager.dto.BinaryPushRequest;
 import com.rustto.manager.entity.ClientBinary;
+import com.rustto.manager.security.OperLog;
+import com.rustto.manager.security.RequirePermission;
 import com.rustto.manager.service.BinaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/binaries")
 @RequiredArgsConstructor
+@RequirePermission("backup:binary:list")
 public class BinaryController {
 
     private final BinaryService binaryService;
@@ -37,6 +40,8 @@ public class BinaryController {
      * @throws IOException 读写失败
      */
     @PostMapping("/upload")
+    @RequirePermission("backup:binary:upload")
+    @OperLog("上传二进制")
     public Result<ClientBinary> upload(@RequestParam("file") MultipartFile file,
                                        @RequestParam("version") String version) throws IOException {
         return Result.success(binaryService.store(file, version));
@@ -63,6 +68,8 @@ public class BinaryController {
      * @return 是否成功下发
      */
     @PostMapping("/{id}/push")
+    @RequirePermission("backup:binary:push")
+    @OperLog("下发二进制")
     public Result<Boolean> push(@PathVariable Long id, @RequestBody @Valid BinaryPushRequest request) {
         return Result.success(binaryService.pushToNode(id, request.getNodeId()));
     }

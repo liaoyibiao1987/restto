@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rustto.manager.mapper.SysRoleMapper">
+
+    <!-- 用户是否绑定 admin 角色（参数化，防注入） -->
+    <select id="existsAdminForUser" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_user_role ur
+        JOIN sys_role r ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND r.role_code = 'admin'
+          AND r.status = 1
+    </select>
+
+    <!-- 用户全部角色编码（启用角色） -->
+    <select id="selectRoleCodesByUserId" resultType="java.lang.String">
+        SELECT r.role_code
+        FROM sys_user_role ur
+        JOIN sys_role r ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND r.status = 1
+    </select>
+
+</mapper>

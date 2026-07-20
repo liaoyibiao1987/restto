@@ -1,0 +1,201 @@
+/* =========================================================
+   rustto 深空青蓝霓虹主题
+   - 基于 Element Plus 暗色变量覆盖（不新增依赖）
+   - 色板：近黑深蓝底 + 电光青高亮 + 玻璃拟态 + 等宽数字
+   ========================================================= */
+
+:root,
+html.dark {
+  /* 品牌主色：电光青 */
+  --el-color-primary: #00e5ff;
+  --el-color-primary-light-3: #33eaff;
+  --el-color-primary-light-5: #66f0ff;
+  --el-color-primary-light-7: #99f5ff;
+  --el-color-primary-light-8: #1b3a4a;
+  --el-color-primary-light-9: #12283a;
+  --el-color-primary-dark-2: #00b8cc;
+
+  /* 背景层级 */
+  --el-bg-color: #0a0e1a;
+  --el-bg-color-page: #070b14;
+  --el-bg-color-overlay: #0d1526;
+
+  /* 文字 */
+  --el-text-color-primary: #e6f2ff;
+  --el-text-color-regular: #b8c7dc;
+  --el-text-color-secondary: #7d8ba3;
+  --el-text-color-placeholder: #56657d;
+
+  /* 边框 / 分割 */
+  --el-border-color: rgba(0, 229, 255, 0.18);
+  --el-border-color-light: rgba(0, 229, 255, 0.12);
+  --el-border-color-lighter: rgba(120, 160, 200, 0.1);
+  --el-border-color-extra-light: rgba(120, 160, 200, 0.06);
+
+  /* 填充 */
+  --el-fill-color: rgba(255, 255, 255, 0.04);
+  --el-fill-color-light: rgba(255, 255, 255, 0.03);
+  --el-fill-color-blank: transparent;
+
+  /* 主题自定义变量 */
+  --tech-bg: #070b14;
+  --tech-panel: #0d1526;
+  --tech-accent: #00e5ff;
+  --tech-accent-2: #7c5cff;
+  --tech-success: #00ff9d;
+  --tech-danger: #ff4d6d;
+  --tech-warning: #ffb454;
+  --tech-glow: 0 0 12px rgba(0, 229, 255, 0.45);
+  --tech-border: rgba(0, 229, 255, 0.22);
+  --tech-font-mono: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+}
+
+/* 全局底色 + 网格扫描背景 */
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--tech-bg);
+  color: var(--el-text-color-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.45);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- 工具类 ---------- */
+
+/* 玻璃拟态卡片 */
+.tech-card {
+  position: relative;
+  background: linear-gradient(160deg, rgba(13, 21, 38, 0.85), rgba(10, 14, 26, 0.7));
+  border: 1px solid var(--tech-border);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(0, 229, 255, 0.04);
+}
+
+/* 青色发光 */
+.tech-glow {
+  box-shadow: var(--tech-glow);
+}
+
+/* 等宽数字 */
+.tech-mono {
+  font-family: var(--tech-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+/* 顶部细发光线（卡片/面板点缀） */
+.tech-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--tech-accent), transparent);
+  opacity: 0.6;
+}
+
+/* ---------- Element Plus 组件深色微调 ---------- */
+
+/* 表格 */
+.el-table {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: rgba(0, 229, 255, 0.06);
+  --el-table-border-color: rgba(120, 160, 200, 0.12);
+  --el-table-row-hover-bg-color: rgba(0, 229, 255, 0.06);
+  --el-table-text-color: var(--el-text-color-primary);
+  --el-table-header-text-color: var(--tech-accent);
+  background: transparent !important;
+}
+.el-table tr,
+.el-table th.el-table__cell {
+  background-color: transparent !important;
+}
+.el-table--border,
+.el-table--border .el-table__cell {
+  border-color: rgba(120, 160, 200, 0.12) !important;
+}
+
+/* 卡片 */
+.el-card {
+  background: linear-gradient(160deg, rgba(13, 21, 38, 0.85), rgba(10, 14, 26, 0.7));
+  border: 1px solid var(--tech-border);
+  color: var(--el-text-color-primary);
+}
+
+/* 输入 / 选择 */
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select .el-input__wrapper {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 0 0 1px var(--tech-border) inset !important;
+}
+.el-input__wrapper:hover,
+.el-select .el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--tech-accent) inset !important;
+}
+
+/* 对话框 */
+.el-dialog,
+.el-drawer {
+  background: var(--tech-panel) !important;
+  border: 1px solid var(--tech-border);
+}
+.el-dialog__title,
+.el-drawer__title {
+  color: var(--tech-accent);
+}
+
+/* 分页 */
+.el-pagination {
+  --el-pagination-bg-color: transparent;
+  --el-pagination-button-bg-color: transparent;
+  --el-pagination-hover-color: var(--tech-accent);
+  color: var(--el-text-color-regular);
+}
+
+/* 菜单（侧边栏） */
+.el-menu {
+  background-color: transparent;
+  border-right: none;
+}
+.el-menu-item,
+.el-sub-menu__title {
+  color: var(--el-text-color-regular);
+}
+.el-menu-item:hover,
+.el-sub-menu__title:hover {
+  background: rgba(0, 229, 255, 0.08) !important;
+}
+.el-menu-item.is-active {
+  color: var(--tech-accent) !important;
+  background: rgba(0, 229, 255, 0.12) !important;
+  box-shadow: inset 3px 0 0 var(--tech-accent);
+}

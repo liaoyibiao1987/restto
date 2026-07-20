@@ -6,6 +6,8 @@ import com.rustto.manager.common.Result;
 import com.rustto.manager.common.ResultCode;
 import com.rustto.manager.dto.TaskSaveRequest;
 import com.rustto.manager.entity.BackupTask;
+import com.rustto.manager.security.OperLog;
+import com.rustto.manager.security.RequirePermission;
 import com.rustto.manager.service.BackupTaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +28,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
+@RequirePermission("backup:task:list")
 public class BackupTaskController {
 
     private final BackupTaskService backupTaskService;
@@ -37,6 +40,8 @@ public class BackupTaskController {
      * @return 任务
      */
     @PostMapping
+    @RequirePermission("backup:task:create")
+    @OperLog("新增备份任务")
     public Result<BackupTask> create(@RequestBody @Valid TaskSaveRequest request) {
         return Result.success(backupTaskService.create(request));
     }
@@ -49,6 +54,8 @@ public class BackupTaskController {
      * @return 任务
      */
     @PutMapping("/{id}")
+    @RequirePermission("backup:task:update")
+    @OperLog("修改备份任务")
     public Result<BackupTask> update(@PathVariable Long id, @RequestBody @Valid TaskSaveRequest request) {
         return Result.success(backupTaskService.updateTask(id, request));
     }
@@ -73,6 +80,7 @@ public class BackupTaskController {
      * @return 任务
      */
     @GetMapping("/{id}")
+    @RequirePermission("backup:task:query")
     public Result<BackupTask> get(@PathVariable Long id) {
         BackupTask task = backupTaskService.getById(id);
         if (task == null) {
@@ -88,6 +96,8 @@ public class BackupTaskController {
      * @return 结果
      */
     @DeleteMapping("/{id}")
+    @RequirePermission("backup:task:delete")
+    @OperLog("删除备份任务")
     public Result<Void> delete(@PathVariable Long id) {
         backupTaskService.removeById(id);
         return Result.success();
@@ -100,6 +110,8 @@ public class BackupTaskController {
      * @return 是否成功下发到在线节点
      */
     @PostMapping("/{id}/run")
+    @RequirePermission("backup:task:run")
+    @OperLog("立即执行备份任务")
     public Result<Boolean> run(@PathVariable Long id) {
         return Result.success(backupTaskService.runNow(id));
     }
