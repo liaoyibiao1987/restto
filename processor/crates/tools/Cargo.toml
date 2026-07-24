@@ -1,0 +1,10 @@
+[package]
+name = "rustto-tools"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+rustto-common = { path = "../common" }
+rustto-backup-file = { path = "../backup-file" }
+rustto-backup-mysql = { path = "../backup-mysql" }

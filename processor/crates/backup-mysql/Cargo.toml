@@ -1,17 +1,14 @@
 [package]
-name = "rustto-modules"
+name = "rustto-backup-mysql"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+rustto-common = { path = "../common" }
 rustto-core = { path = "../core" }
-tokio = { version = "1", features = ["fs", "io-util", "process", "rt"] }
+async-trait = "0.1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tar = "0.4"
 flate2 = "1"
-sha2 = "0.10"
-hex = "0.4"
-tracing = "0.1"
-thiserror = "1"
+tokio = { version = "1", features = ["process", "rt"] }

@@ -137,7 +137,10 @@ pub struct BinaryAck {
 /// - `message_type`: 消息类型。
 /// - `payload`: 任何可序列化为 JSON 的结构。
 /// 返回包含完整帧（含 magic/length/type）的 `Bytes`。
-pub fn encode<T: Serialize>(message_type: MessageType, payload: &T) -> Result<Bytes, ProtocolError> {
+pub fn encode<T: Serialize>(
+    message_type: MessageType,
+    payload: &T,
+) -> Result<Bytes, ProtocolError> {
     let json = serde_json::to_vec(payload)?;
     if json.len() > MAX_PAYLOAD_LEN {
         return Err(ProtocolError::PayloadTooLarge(json.len()));
@@ -169,8 +172,8 @@ pub async fn read_frame<R: AsyncRead + Unpin>(
     if body_len > 1 + MAX_PAYLOAD_LEN {
         return Err(ProtocolError::PayloadTooLarge(body_len));
     }
-    let message_type = MessageType::from_u8(header[8])
-        .ok_or(ProtocolError::InvalidMessageType(header[8]))?;
+    let message_type =
+        MessageType::from_u8(header[8]).ok_or(ProtocolError::InvalidMessageType(header[8]))?;
     let payload_len = body_len - 1;
     let mut payload = vec![0u8; payload_len];
     reader.read_exact(&mut payload).await?;

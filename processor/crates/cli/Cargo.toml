@@ -10,7 +10,8 @@ path = "src/main.rs"
 
 [dependencies]
 rustto-core = { path = "../core" }
-rustto-modules = { path = "../modules" }
+rustto-common = { path = "../common" }
+rustto-tools = { path = "../tools" }
 tokio = { version = "1", features = ["full"] }
 bytes = "1"
 clap = { version = "4", features = ["derive"] }

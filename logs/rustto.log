@@ -1,0 +1,5 @@
+2026-07-21 00:01:58.058 [http-nio-8080-exec-3] DEBUG c.r.manager.security.OperLogAspect - 入参序列化失败：No serializer found for class java.io.FileDescriptor and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile[0]->org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile["inputStream"]->java.io.FileInputStream["fd"])
+2026-07-21 00:02:17.751 [http-nio-8080-exec-8] WARN  c.r.m.common.GlobalExceptionHandler - business error: code=40001, msg=节点名已存在: AAAA
+2026-07-21 00:22:07.542 [SpringApplicationShutdownHook] INFO  com.rustto.manager.netty.NettyServer - Netty server stopped
+2026-07-21 00:22:07.547 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-21 00:22:07.557 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
