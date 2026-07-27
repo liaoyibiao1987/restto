@@ -1,0 +1,24 @@
+# 交叉编译链接配置：纯静态、零系统依赖。
+#
+# 用 rust 自带的 `rust-lld` + bundled crt（self-contained）链接，不依赖系统的
+# gcc/ld 或任何交叉工具链。产物为静态 ELF，可直接拷进 docker scratch 镜像
+# 或任意 Linux 发行版运行，无需安装动态库。
+#
+# - `linker = "rust-lld"`：rustc 在自身 toolchain bin 中定位 lld，路径无关 toolchain 版本。
+# - `linker-flavor = "ld.lld"`：以 GNU ld 兼容方式调用 lld。
+# - `link-self-contained = "yes"`：使用 rust 预打包的 musl crt/libc（含 aarch64）。
+#
+# 说明：
+# - x86_64-musl 原本用系统 cc 也能编，这里统一改 lld 以保证完全自包含、无系统依赖。
+# - aarch64-musl 用本机 x86_64 ld 无法链接 aarch64 目标文件，必须走 lld self-contained。
+# - x86_64-pc-windows-gnu 不在此配置：稳定版 rust 的 self-contained 缺完整 mingw 运行时库
+#   （libmsvcrt/libmingwex 等），仍需系统 mingw（`apt install gcc-mingw-w64-x86-64`），
+#   交由 scripts/cross.sh 预检把关。
+
+[target.aarch64-unknown-linux-musl]
+linker = "rust-lld"
+rustflags = ["-C", "link-self-contained=yes", "-C", "linker-flavor=ld.lld"]
+
+[target.x86_64-unknown-linux-musl]
+linker = "rust-lld"
+rustflags = ["-C", "link-self-contained=yes", "-C", "linker-flavor=ld.lld"]

@@ -1,0 +1,37 @@
+# rustto-client 容器镜像。
+#
+# 使用 scripts/cross.sh 产出的纯静态 musl 二进制（self-contained lld + bundled crt，
+# 无任何动态库依赖）。最终镜像 FROM scratch，只含一个 ~2.5MB 的可执行文件。
+#
+# 先交叉编译产出归档（在仓库 processor/ 下）：
+#   ./scripts/cross.sh x86_64-unknown-linux-musl aarch64-unknown-linux-musl
+#
+# 单架构构建（amd64）：
+#   docker build -t rustto-client:0.1.0 .
+#   docker run --rm rustto-client:0.1.0 --help
+#
+# 多架构构建并推送（buildx）：
+#   docker buildx build --platform linux/amd64,linux/arm64 -t rustto-client:0.1.0 --push .
+#
+# 注：rustto-client 走自定义 TCP 协议直连 Manager，无 HTTPS，因此 scratch 不需要 CA 证书。
+# 如未来引入 TLS，改用 FROM alpine 或在 scratch 里追加 ca-certificates。
+
+# ---- 解压阶段：用 alpine 的 tar 把对应架构的 tar.gz 解出来 ----
+FROM alpine:latest AS unpack
+ARG TARGETARCH=amd64
+COPY dist/ /tmp/dist/
+WORKDIR /out
+RUN case "$TARGETARCH" in \
+      amd64) arch=x86_64 ;; \
+      arm64) arch=aarch64 ;; \
+      *) echo "unsupported TARGETARCH=$TARGETARCH" >&2; exit 1 ;; \
+    esac && \
+    tar -xzf /tmp/dist/rustto-client-*-${arch}-unknown-linux-musl.tar.gz -C /out && \
+    test -x /out/rustto-client
+
+# ---- 运行阶段：scratch 只装静态二进制 ----
+FROM scratch
+LABEL org.opencontainers.image.title="rustto-client" \
+      org.opencontainers.image.source="https://github.com/rustto/rustto"
+COPY --from=unpack /out/rustto-client /usr/local/bin/rustto-client
+ENTRYPOINT ["/usr/local/bin/rustto-client"]
