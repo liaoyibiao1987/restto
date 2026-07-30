@@ -38,7 +38,16 @@ const routes = [
       },
     ],
   },
-  { path: '/:pathMatch(.*)*', redirect: '/404' },
+  // 兜底路由：用 component 渲染 NotFound，且不要给它 name。
+  //   - 必须是 component 而非 redirect 到 '/404'：redirect 在 router.resolve() 阶段
+  //     （早于 beforeEach 守卫）就把 to 改写成 '/404'，守卫来不及注册动态路由。
+  //   - 不能有 name：守卫末尾 return { ...to, replace: true } 时，若 to.name 存在，
+  //     vue-router 会按 name 解析（重新落到本兜底路由），而非按 to.path 解析到刚注册
+  //     的动态路由，刷新仍然 404。
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('../views/system/NotFound.vue'),
+  },
 ];
 
 const router = createRouter({
