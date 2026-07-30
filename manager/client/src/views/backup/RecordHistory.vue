@@ -38,7 +38,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { fetchRecords } from '../api/record';
+import { fetchRecords } from '../../api/record';
 
 const rows = ref([]);
 const total = ref(0);

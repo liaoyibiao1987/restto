@@ -73,14 +73,14 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { fetchNodes } from '../api/node';
+import { fetchNodes } from '../../api/node';
 import {
   createTask,
   deleteTask,
   fetchTasks,
   runTask,
   updateTask,
-} from '../api/task';
+} from '../../api/task';
 
 const rows = ref([]);
 const total = ref(0);

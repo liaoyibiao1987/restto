@@ -50,7 +50,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { createNode, deleteNode, fetchNodes } from '../api/node';
+import { createNode, deleteNode, fetchNodes } from '../../api/node';
 
 const rows = ref([]);
 const total = ref(0);

@@ -58,8 +58,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { fetchNodes } from '../api/node';
-import { fetchBinaries, pushBinary, uploadBinary } from '../api/binary';
+import { fetchNodes } from '../../api/node';
+import { fetchBinaries, pushBinary, uploadBinary } from '../../api/binary';
 
 const rows = ref([]);
 const total = ref(0);

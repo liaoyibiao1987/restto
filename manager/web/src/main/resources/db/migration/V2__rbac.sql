@@ -118,10 +118,10 @@ INSERT IGNORE INTO `sys_menu`
     (15, 10, '操作日志', 2, 'system:log',        '/system/log',       'system/OperLog',           'log',        4, 1, 1),
     -- 备份管理
     (20, 0,  '备份管理', 1, NULL,                '/backup',           NULL,                       'backup',     20, 1, 1),
-    (21, 20, '节点管理', 2, 'backup:node',       '/backup/node',      'NodeManage',               'server',     0, 1, 1),
-    (22, 20, '任务管理', 2, 'backup:task',       '/backup/task',      'TaskManage',               'task',       1, 1, 1),
-    (23, 20, '记录管理', 2, 'backup:record',     '/backup/record',    'RecordHistory',            'list',       2, 1, 1),
-    (24, 20, '二进制管理', 2, 'backup:binary',   '/backup/binary',    'BinaryManage',             'binary',     3, 1, 1);
+    (21, 20, '节点管理', 2, 'backup:node',       '/backup/node',      'backup/NodeManage',        'server',     0, 1, 1),
+    (22, 20, '任务管理', 2, 'backup:task',       '/backup/task',      'backup/TaskManage',        'task',       1, 1, 1),
+    (23, 20, '记录管理', 2, 'backup:record',     '/backup/record',    'backup/RecordHistory',     'list',       2, 1, 1),
+    (24, 20, '二进制管理', 2, 'backup:binary',   '/backup/binary',    'backup/BinaryManage',      'binary',     3, 1, 1);
 
 -- 权限点
 INSERT IGNORE INTO `sys_permission` (`id`, `permission_code`, `permission_name`, `module`, `remark`) VALUES
