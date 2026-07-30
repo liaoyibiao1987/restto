@@ -1,57 +1,31 @@
-2026-07-27 23:00:33.190 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
-2026-07-27 23:00:33.214 [main] INFO  c.rustto.manager.ManagerApplication - Starting ManagerApplication using Java 1.8.0_452 on DESKTOP-AGMQ460 with PID 5666 (/home/pingpingliao/rustto/manager/web/target/classes started by pingpingliao in /home/pingpingliao/rustto)
-2026-07-27 23:00:33.218 [main] DEBUG c.rustto.manager.ManagerApplication - Running with Spring Boot v2.7.18, Spring v5.3.31
-2026-07-27 23:00:33.219 [main] INFO  c.rustto.manager.ManagerApplication - No active profile set, falling back to 1 default profile: "default"
-2026-07-27 23:00:35.297 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-2026-07-27 23:00:35.304 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-07-27 23:00:35.306 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-07-27 23:00:35.306 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
-2026-07-27 23:00:35.402 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-07-27 23:00:35.402 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2065 ms
-2026-07-27 23:00:36.065 [main] INFO  o.f.c.i.license.VersionPrinter - Flyway Community Edition 8.5.13 by Redgate
-2026-07-27 23:00:36.066 [main] INFO  o.f.c.i.license.VersionPrinter - See what's new here: https://flywaydb.org/documentation/learnmore/releaseNotes#8.5.13
-2026-07-27 23:00:36.066 [main] INFO  o.f.c.i.license.VersionPrinter - 
-2026-07-27 23:00:36.079 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-07-27 23:00:36.359 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-07-27 23:00:36.397 [main] INFO  o.f.c.i.d.base.BaseDatabaseType - Database: jdbc:mysql://localhost:3306/rustto (MySQL 8.0)
-2026-07-27 23:00:36.476 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 2 migrations (execution time 00:00.038s)
-2026-07-27 23:00:36.487 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `rustto`: 2
-2026-07-27 23:00:36.488 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `rustto` is up to date. No migration necessary.
-2026-07-27 23:00:37.314 [rustto-netty-server] INFO  com.rustto.manager.netty.NettyServer - Netty server bound on port 9600
-2026-07-27 23:00:37.729 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-07-27 23:00:37.740 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-2026-07-27 23:00:37.753 [main] INFO  c.rustto.manager.ManagerApplication - Started ManagerApplication in 5.737 seconds (JVM running for 7.358)
-2026-07-27 23:00:37.828 [main] DEBUG c.r.m.bootstrap.DataInitializer - 管理员账号 admin 已存在且密码非旧值，跳过
-2026-07-27 23:01:20.487 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-07-27 23:01:20.487 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2026-07-27 23:01:20.488 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2026-07-27 23:09:06.062 [nioEventLoopGroup-3-1] WARN  c.r.m.netty.ServerChannelHandler - register rejected: name=default-node
-2026-07-27 23:09:11.069 [nioEventLoopGroup-3-2] WARN  c.r.m.netty.ServerChannelHandler - register rejected: name=default-node
-2026-07-27 23:09:25.107 [http-nio-8080-exec-9] WARN  c.r.m.common.GlobalExceptionHandler - business error: code=40001, msg=节点名已存在: node1
-2026-07-27 23:09:36.637 [nioEventLoopGroup-3-3] INFO  c.r.manager.netty.ConnectionRegistry - node 3 connected
-2026-07-27 23:09:36.637 [nioEventLoopGroup-3-3] INFO  c.r.m.netty.ServerChannelHandler - node 3 registered (version=0.1.0)
-2026-07-27 23:09:54.817 [http-nio-8080-exec-9] INFO  c.r.manager.netty.BinaryDistributor - binary v1.0.2 pushed to node 3 (1 chunks)
-2026-07-27 23:09:54.825 [nioEventLoopGroup-3-3] INFO  c.r.m.netty.ServerChannelHandler - binary ack v1.0.2 success=true
-2026-07-27 23:13:35.160 [http-nio-8080-exec-5] WARN  c.r.m.common.GlobalExceptionHandler - business error: code=42200, msg=paramsJson 不是合法 JSON
-2026-07-27 23:13:58.243 [nioEventLoopGroup-3-3] INFO  c.r.m.netty.ServerChannelHandler - task #1 result: success
-2026-07-27 23:14:07.797 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:15:07.799 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:16:07.801 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:17:07.803 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:18:07.805 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:19:07.807 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:20:07.809 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:21:07.811 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:22:07.814 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:23:07.816 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:24:07.819 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:25:07.822 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:26:07.824 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:27:07.825 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:28:07.827 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:29:07.829 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:30:07.831 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:31:07.833 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:32:07.835 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:33:07.838 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
-2026-07-27 23:34:07.840 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
+2026-07-30 22:25:15.650 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.2.5.Final
+2026-07-30 22:25:15.675 [main] INFO  c.rustto.manager.ManagerApplication - Starting ManagerApplication using Java 1.8.0_452 on DESKTOP-AGMQ460 with PID 8689 (/home/pingpingliao/rustto/manager/web/target/classes started by pingpingliao in /home/pingpingliao/rustto)
+2026-07-30 22:25:15.675 [main] DEBUG c.rustto.manager.ManagerApplication - Running with Spring Boot v2.7.18, Spring v5.3.31
+2026-07-30 22:25:15.676 [main] INFO  c.rustto.manager.ManagerApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-30 22:25:17.416 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-07-30 22:25:17.422 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-07-30 22:25:17.423 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-30 22:25:17.423 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.83]
+2026-07-30 22:25:17.511 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-07-30 22:25:17.512 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1694 ms
+2026-07-30 22:25:18.204 [main] INFO  o.f.c.i.license.VersionPrinter - Flyway Community Edition 8.5.13 by Redgate
+2026-07-30 22:25:18.204 [main] INFO  o.f.c.i.license.VersionPrinter - See what's new here: https://flywaydb.org/documentation/learnmore/releaseNotes#8.5.13
+2026-07-30 22:25:18.204 [main] INFO  o.f.c.i.license.VersionPrinter - 
+2026-07-30 22:25:18.214 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-30 22:25:18.531 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-30 22:25:18.563 [main] INFO  o.f.c.i.d.base.BaseDatabaseType - Database: jdbc:mysql://localhost:3306/rustto (MySQL 8.0)
+2026-07-30 22:25:18.730 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.065s)
+2026-07-30 22:25:18.737 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema `rustto`: 3
+2026-07-30 22:25:18.739 [main] INFO  o.f.core.internal.command.DbMigrate - Schema `rustto` is up to date. No migration necessary.
+2026-07-30 22:25:19.755 [rustto-netty-server] INFO  com.rustto.manager.netty.NettyServer - Netty server bound on port 9600
+2026-07-30 22:25:19.994 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-07-30 22:25:20.010 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-07-30 22:25:20.024 [main] INFO  c.rustto.manager.ManagerApplication - Started ManagerApplication in 5.517 seconds (JVM running for 7.663)
+2026-07-30 22:25:20.190 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-30 22:25:20.190 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-07-30 22:25:20.191 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-07-30 22:25:20.284 [main] DEBUG c.r.m.bootstrap.DataInitializer - 管理员账号 admin 已存在且密码非旧值，跳过
+2026-07-30 22:25:20.561 [http-nio-8080-exec-1] WARN  c.r.m.security.TokenInterceptor - invalid token: JWT expired at 2026-07-28T04:40:13Z. Current time: 2026-07-30T14:25:20Z, a difference of 207907560 milliseconds.  Allowed clock skew: 0 milliseconds.
+2026-07-30 22:25:20.561 [http-nio-8080-exec-2] WARN  c.r.m.security.TokenInterceptor - invalid token: JWT expired at 2026-07-28T04:40:13Z. Current time: 2026-07-30T14:25:20Z, a difference of 207907560 milliseconds.  Allowed clock skew: 0 milliseconds.
+2026-07-30 22:25:52.449 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")
+2026-07-30 22:26:57.337 [scheduling-1] WARN  c.r.m.scheduler.BackupTaskScheduler - invalid cron '* * * * *': Cron expression must consist of 6 fields (found 5 in "* * * * *")

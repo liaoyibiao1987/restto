@@ -3,6 +3,7 @@ package com.rustto.manager.netty;
 import com.rustto.manager.config.NettyProperties;
 import com.rustto.manager.service.BackupRecordService;
 import com.rustto.manager.service.NodeService;
+import com.rustto.manager.service.WorkflowExecutionService;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -35,6 +36,9 @@ public class NettyServer {
     private final NodeService nodeService;
 
     private final BackupRecordService backupRecordService;
+
+    // ⚠️ 需人类审核（AGENT.MD §5.2）：注入工作流引擎供 ChannelInitializer 使用。
+    private final WorkflowExecutionService workflowExecutionService;
 
     private EventLoopGroup bossGroup;
 
@@ -70,7 +74,8 @@ public class NettyServer {
                                             ProtocolCodec.MAX_FRAME, 4, 4, 0, 0))
                                     .addLast(new FrameDecoder())
                                     .addLast(new ServerChannelHandler(
-                                            nodeService, backupRecordService, connectionRegistry));
+                                            nodeService, backupRecordService, connectionRegistry,
+                                            workflowExecutionService));
                         }
                     });
             serverChannel = bootstrap.bind(nettyProperties.getPort()).sync().channel();

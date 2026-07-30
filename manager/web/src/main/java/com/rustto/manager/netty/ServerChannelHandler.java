@@ -8,6 +8,7 @@ import com.rustto.manager.netty.message.ProtocolMessages.RegisterMessage;
 import com.rustto.manager.netty.message.ProtocolMessages.TaskResult;
 import com.rustto.manager.service.BackupRecordService;
 import com.rustto.manager.service.NodeService;
+import com.rustto.manager.service.WorkflowExecutionService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<InboundMes
     private final BackupRecordService backupRecordService;
 
     private final ConnectionRegistry connectionRegistry;
+
+    // ⚠️ 需人类审核（AGENT.MD §5.2）：在核心消息处理热路径注入工作流引擎。
+    private final WorkflowExecutionService workflowExecutionService;
 
     /** 当前连接绑定的节点 ID（注册成功后赋值）。 */
     private Long boundNodeId;
@@ -58,6 +62,8 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<InboundMes
         if (boundNodeId != null) {
             connectionRegistry.remove(boundNodeId);
             nodeService.markOffline(boundNodeId);
+            // ⚠️ 需人类审核：节点断连，把该节点在途的工作流任务标记失败，防止永久挂起。
+            workflowExecutionService.onNodeDisconnected(boundNodeId);
         }
     }
 
@@ -119,6 +125,8 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<InboundMes
         try {
             TaskResult result = ProtocolCodec.MAPPER.treeToValue(msg.payload, TaskResult.class);
             backupRecordService.applyResult(result.getTaskId(), boundNodeId, result);
+            // ⚠️ 需人类审核：把任务结果回调给工作流引擎（无工作流等待时为廉价 no-op）。
+            workflowExecutionService.onTaskResult(result.getTaskId(), result.getStatus(), result.getError());
             log.info("task #{} result: {}", result.getTaskId(), result.getStatus());
         } catch (Exception e) {
             log.error("handle task result failed: {}", e.getMessage(), e);
