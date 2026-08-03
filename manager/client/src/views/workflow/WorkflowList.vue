@@ -88,7 +88,7 @@ function onPage(p) {
 }
 
 function onCreate() {
-  router.push('/backup/workflow/design');
+  router.push('/workflow/design');
 }
 
 /**
@@ -97,7 +97,7 @@ function onCreate() {
  * @param {object} row 行数据
  */
 function onDesign(row) {
-  router.push({ path: '/backup/workflow/design', query: { id: row.id } });
+  router.push({ path: '/workflow/design', query: { id: row.id } });
 }
 
 /**
@@ -106,7 +106,7 @@ function onDesign(row) {
  * @param {object} row 行数据
  */
 function onHistory(row) {
-  router.push({ path: '/backup/workflow/history', query: { workflowId: row.id } });
+  router.push({ path: '/workflow/history', query: { workflowId: row.id } });
 }
 
 /**

@@ -462,7 +462,7 @@ async function onRun() {
 }
 
 function onBack() {
-  router.push('/backup/workflow');
+  router.push('/workflow');
 }
 
 // ===== three.js 深空背景 =====
