@@ -18,7 +18,8 @@
         <result property="createdAt" column="created_at"/>
     </resultMap>
 
-    <!-- 非超管：取用户可见的菜单（经角色关联 + 启用过滤），按 sort 升序 -->
+    <!-- 非超管：取用户可访问的菜单（经角色关联 + 启用过滤），按 sort 升序。
+         含 visible=0 的隐藏路由（如工作流设计器），前端注册路由用，侧边栏按 visible 自行隐藏。 -->
     <select id="selectMenusByUserId" resultMap="sysMenuMap">
         SELECT DISTINCT m.*
         FROM sys_role_menu rm
@@ -27,7 +28,6 @@
         JOIN sys_role r       ON r.id = ur.role_id
         WHERE ur.user_id = #{userId}
           AND r.status = 1
-          AND m.visible = 1
           AND m.status = 1
         ORDER BY m.sort ASC
     </select>

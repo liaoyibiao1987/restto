@@ -37,8 +37,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<MenuTreeNode> treeByUserId(Long userId) {
         List<SysMenu> menus;
         if (sysRoleService.isAdmin(userId)) {
+            // 含 visible=0 的隐藏路由（如工作流设计器）：前端用来注册路由，侧边栏按 visible 自行隐藏
             menus = list(new QueryWrapper<SysMenu>()
-                    .eq("visible", 1).eq("status", 1).orderByAsc("sort", "id"));
+                    .eq("status", 1).orderByAsc("sort", "id"));
         } else {
             menus = baseMapper.selectMenusByUserId(userId);
         }
