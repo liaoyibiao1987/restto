@@ -22,3 +22,11 @@ rustflags = ["-C", "link-self-contained=yes", "-C", "linker-flavor=ld.lld"]
 [target.x86_64-unknown-linux-musl]
 linker = "rust-lld"
 rustflags = ["-C", "link-self-contained=yes", "-C", "linker-flavor=ld.lld"]
+
+# 离线依赖：所有 crate 已 vendored 到项目内 `vendor/` 目录，cargo 优先从本地
+# 读取，不再联网 crates.io 下载。新增/升级依赖后需重跑 `cargo vendor vendor`。
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
