@@ -1,0 +1,31 @@
+{
+    "maven.executable.path": "/opt/apache-maven-3.8.9/bin/mvn",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "/usr/lib/jvm/java-8-openjdk-amd64"
+        }
+    ],
+    "java.jdt.ls.java.home": "/usr/lib/jvm/java-8-openjdk-amd64",
+    "java.project.sourcePaths": [
+        "src/main/java",
+        "src/test/java"
+    ],
+    "java.project.testPaths": [
+        "src/test/java"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/*"
+    ],
+    "java.project.referencedLibrariesPaths": [
+        "lib"
+    ],
+    "java.project.referencedLibrariesIncludeSelf": true,
+    "java.project.referencedLibrariesIncludeSubdirectories": true,
+
+    "java.project.referencedLibrariesIncludeJars": true,
+    "java.compile.nullAnalysis.mode": "automatic",
+    "remote.autoForwardPortsFallback": 0
+
+}
