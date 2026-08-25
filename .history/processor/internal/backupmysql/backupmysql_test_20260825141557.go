@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"rustto-client/internal/common"
+	"restto-client/internal/common"
 )
 
 // 覆盖参数解析、Tool 缺参校验、端口缺省，以及无 mysqldump 时不 panic。

@@ -16,11 +16,11 @@ import (
 	"sync"
 	"time"
 
-	"rustto-client/internal/common"
-	"rustto-client/internal/core/config"
-	"rustto-client/internal/core/crypto"
-	"rustto-client/internal/core/protocol"
-	"rustto-client/internal/tools"
+	"restto-client/internal/common"
+	"restto-client/internal/core/config"
+	"restto-client/internal/core/crypto"
+	"restto-client/internal/core/protocol"
+	"restto-client/internal/tools"
 )
 
 // reconnectDelay 断线重连间隔。
@@ -275,7 +275,7 @@ func (s *session) persistReceivedBinary(data []byte, version string) {
 		slog.Error("create data dir failed", "err", err)
 		return
 	}
-	dest := filepath.Join(s.dataDir, fmt.Sprintf("rustto-client-%s.bin", version))
+	dest := filepath.Join(s.dataDir, fmt.Sprintf("restto-client-%s.bin", version))
 	if err := os.WriteFile(dest, data, 0o755); err != nil {
 		slog.Error("write received binary failed", "err", err)
 		return

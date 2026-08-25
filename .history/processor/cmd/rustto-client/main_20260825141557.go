@@ -1,4 +1,4 @@
-// rustto-client 主程序：agent 友好的 CLI + 常驻 daemon。
+// restto-client 主程序：agent 友好的 CLI + 常驻 daemon。
 //
 // 命令结构（详见各分支）：
 //   - daemon：常驻进程（注册 / 心跳 / 接收并执行任务 / 接收二进制下发）。
@@ -23,11 +23,11 @@ import (
 	"strings"
 	"syscall"
 
-	"rustto-client/internal/common"
-	"rustto-client/internal/core/config"
-	"rustto-client/internal/core/logger"
-	"rustto-client/internal/daemon"
-	"rustto-client/internal/tools"
+	"restto-client/internal/common"
+	"restto-client/internal/core/config"
+	"restto-client/internal/core/logger"
+	"restto-client/internal/daemon"
+	"restto-client/internal/tools"
 )
 
 func main() {
@@ -89,7 +89,7 @@ func run(argv []string, stdin io.Reader, stdout io.Writer) int {
 		return 0
 
 	case "-V", "--version", "version":
-		fmt.Fprintf(stdout, "rustto-client %s\n", cfg.Version)
+		fmt.Fprintf(stdout, "restto-client %s\n", cfg.Version)
 		return 0
 
 	default:
@@ -430,16 +430,16 @@ func trimSpace(s string) string {
 
 // usage 打印命令帮助。
 func usage(w io.Writer) {
-	fmt.Fprint(w, `rustto-client — rustto 分布式备份系统客户端（agent 友好 CLI）
+	fmt.Fprint(w, `restto-client — restto 分布式备份系统客户端（agent 友好 CLI）
 
 用法：
-  rustto-client daemon                                  常驻：连接 Manager，接收并执行任务
-  rustto-client tool list                               列出所有工具（agent 发现）
-  rustto-client tool schema <name>                      打印某工具的参数 JSON Schema
-  rustto-client tool run <name> [--args|--args-file]    以 JSON 参数运行工具
-  rustto-client backup-file --path P --dest D           兼容：单次文件 / 目录备份
-  rustto-client backup-mysql --host .. --database .. .. 兼容：单次 MySQL 备份
-  rustto-client run-module <name> --args '<json>'       兼容：按模块名调度
+  restto-client daemon                                  常驻：连接 Manager，接收并执行任务
+  restto-client tool list                               列出所有工具（agent 发现）
+  restto-client tool schema <name>                      打印某工具的参数 JSON Schema
+  restto-client tool run <name> [--args|--args-file]    以 JSON 参数运行工具
+  restto-client backup-file --path P --dest D           兼容：单次文件 / 目录备份
+  restto-client backup-mysql --host .. --database .. .. 兼容：单次 MySQL 备份
+  restto-client run-module <name> --args '<json>'       兼容：按模块名调度
 
 参数来源：--args '<json>' / --args-file ./a.json / --args -（stdin）/ 不给则 {}
 输出为结构化 JSON 信封，成功退出码 0、失败 1。

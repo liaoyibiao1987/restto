@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"rustto-client/internal/common"
+	"restto-client/internal/common"
 )
 
 // 覆盖信封构造、参数解析与 CLI 子命令端到端行为（不触网 / 不起子进程）。

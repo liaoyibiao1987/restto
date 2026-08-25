@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"rustto-client/internal/common"
+	"restto-client/internal/common"
 )
 
 // 覆盖产物→TaskResult 映射与失败结果构造。

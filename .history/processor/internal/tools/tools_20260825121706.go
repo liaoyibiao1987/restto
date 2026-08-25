@@ -15,9 +15,9 @@ package tools
 import (
 	"sync"
 
-	"rustto-client/internal/backupfile"
-	"rustto-client/internal/backupmysql"
-	"rustto-client/internal/common"
+	"restto-client/internal/backupfile"
+	"restto-client/internal/backupmysql"
+	"restto-client/internal/common"
 )
 
 var (

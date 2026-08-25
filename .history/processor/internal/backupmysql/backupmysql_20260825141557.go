@@ -15,8 +15,8 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"rustto-client/internal/common"
-	"rustto-client/internal/core/crypto"
+	"restto-client/internal/common"
+	"restto-client/internal/core/crypto"
 )
 
 // Name 工具名（保持稳定，服务端按此名调度）。

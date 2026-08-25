@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"rustto-client/internal/common"
+	"restto-client/internal/common"
 )
 
 // 覆盖打包成功（目录 / 单文件）、源缺失、Tool 契约调度、缺参校验与归档可解压。

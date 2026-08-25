@@ -16,8 +16,8 @@ import (
 	"strings"
 	"time"
 
-	"rustto-client/internal/common"
-	"rustto-client/internal/core/crypto"
+	"restto-client/internal/common"
+	"restto-client/internal/core/crypto"
 )
 
 // timeNow 可在测试中被替换的时钟。
