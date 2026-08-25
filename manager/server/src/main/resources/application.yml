@@ -5,15 +5,35 @@ spring:
   application:
     name: restto-manager
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:restto}?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    # connectTimeout：建链快速失败，避免网络异常时启动长时间挂起；
+    # socketTimeout：防止网络抖动导致的读挂死（远大于最慢 SQL，正常查询不受影响）；
+    # rewriteBatchedStatements：批量写入（操作日志、RBAC 绑定）合并网络往返，提升吞吐
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:restto}?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true&connectTimeout=10000&socketTimeout=120000&rewriteBatchedStatements=true
     username: ${DB_USER:dev}
     password: ${DB_PASSWORD:12345678}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: restto-hikari
+      # 连接池规模：管理后台 + 调度器 + Netty 侧写入，20 足够
+      minimum-idle: 5
+      maximum-pool-size: 20
+      # 借出连接超时：10s 内拿不到连接快速报错，避免请求线程无限堆积
+      connection-timeout: 10000
+      # 连接有效性校验超时（MySQL 8 走 JDBC4 isValid，无需 test-query）
+      validation-timeout: 5000
+      # 空闲保活：每 2min 对闲置连接发心跳，防止被 MySQL wait_timeout / 中间网络设备静默掐断
+      keepalive-time: 120000
+      # 连接最大存活 29min：须小于 MySQL wait_timeout（默认 8h），主动淘汰避免用到被服务端关闭的连接
+      max-lifetime: 1740000
+      idle-timeout: 600000
+      # 连接泄漏检测：借出超过 60s 未归还打印堆栈，便于定位漏关
+      leak-detection-threshold: 60000
   flyway:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
     baseline-version: 0
+    # 校验/修复策略见 FlywayConfig：老库 checksum 不一致时自动 repair 后重试
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
