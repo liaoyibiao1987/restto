@@ -1,4 +1,5 @@
-/target
+/bin
+/dist-bin
 /dist
 /logs/*
 !/logs/.gitkeep

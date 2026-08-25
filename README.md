@@ -1,6 +1,6 @@
 # rustto — 分布式服务器数据备份系统
 
-基于 **Rust 客户端 + SpringBoot 管理端 + Vue 前端** 的分布式服务器数据备份系统。
+基于 **Go 客户端 + SpringBoot 管理端 + Vue 前端** 的分布式服务器数据备份系统。
 
 ## 架构
 
@@ -13,8 +13,8 @@
                                               │ Netty TCP（自定义协议）
                                               ▼
                                      ┌──────────────────┐
-                                     │  Rust Client     │ 部署在目标机，常驻
-                                     │  client/         │ CLI 调度模块 + daemon
+                                     │  Go Client       │ 部署在目标机，常驻
+                                     │  processor/      │ CLI 调度模块 + daemon
                                      └──────────────────┘
 ```
 
@@ -22,24 +22,24 @@
 
 | 目录              | 角色                 | 技术栈                                      |
 | ----------------- | -------------------- | ------------------------------------------- |
-| `client/`         | 备份客户端（目标机） | Rust（workspace: core / modules / cli）     |
+| `processor/`      | 备份客户端（目标机） | Go（module: core / common / 工具包 / cli）  |
 | `manager/web/`    | 管理端后端           | Spring Boot 2.7 + Netty + MyBatis-Plus + MySQL |
 | `manager/client/` | 管理端前端           | Vue 3 + Vite + Element Plus                 |
 
 ## 核心链路
 
 1. 前端登录拿 JWT → 调 RESTful 接口创建节点（返回一次性 Token）。
-2. Rust 客户端带 Token 通过 Netty 长连接注册到管理端，周期心跳。
+2. Go 客户端带 Token 通过 Netty 长连接注册到管理端，周期心跳。
 3. 创建备份任务（模块 `backup_file` / `backup_mysql` + cron），到点经 Netty 下发 `TASK_COMMAND`。
 4. 客户端本地执行备份，回传 `TASK_RESULT`，落库为备份记录。
-5. 上传新版本 Rust 二进制，经 Netty `BINARY_PUSH` 分片下发到目标节点。
+5. 上传新版本 Go 二进制，经 Netty `BINARY_PUSH` 分片下发到目标节点。
 
 ## Netty 协议（两端字节级对齐）
 
 ```
 | magic 4B "RUST"(0x52555354) | length 4B BE(=1+payloadLen) | type 1B | payload JSON |
 ```
-JSON 字段使用 snake_case。详见 `client/crates/core/src/protocol.rs` 与 `manager/web/.../netty/ProtocolCodec.java`。
+JSON 字段使用 snake_case。详见 `processor/internal/core/protocol/protocol.go` 与 `manager/web/.../netty/ProtocolCodec.java`。
 
 ## 快速开始
 
@@ -54,13 +54,13 @@ cd manager/web && mvn spring-boot:run
 cd manager/client && npm install && npm run dev   # http://127.0.0.1:5173
 
 # 4) 客户端（另起终端，先把 .env 的 NODE_TOKEN 改为节点创建时返回的 Token）
-cd client && cargo run -p rustto-cli -- daemon
+cd processor && go run ./cmd/rustto-client daemon
 ```
 
 ## 约束（AGENT.MD）
 
 - 所有接口 Token 校验、RESTful、数据库变更走 migrations（只增不删）。
-- 不可修改：各项目 `.env`、Rust `crates/core`、`db/migration/` 历史文件。
+- 不可修改：各项目 `.env`、Go `internal/core`、`db/migration/` 历史文件。
 - 日志按日期分区（`logs/`）。
-- 代码风格：前端 Prettier + ESLint(Airbnb)；后端 Lombok + 驼峰；Rust `cargo fmt`。
+- 代码风格：前端 Prettier + ESLint(Airbnb)；后端 Lombok + 驼峰；Go `gofmt` + `go vet`。
 - 新增依赖前先检查现有依赖，禁止重复引入同类库。

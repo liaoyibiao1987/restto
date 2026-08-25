@@ -1,11 +1,11 @@
 ## 1. Project Overview
-- 项目类型：基于rust和springboot的分布式服务器数据备份系统
-- rust在client端实现，springboot在manager端实现，netty作为通信框架
-- rust实现纯静态编译，各个项目实现独立，通过命令行参数传递功能模块名称，服务端根据功能模块名称调用对应的功能模块
-  - client目录存放各个功能模块的代码
+- 项目类型：基于go和springboot的分布式服务器数据备份系统
+- go在client端实现，springboot在manager端实现，netty作为通信框架
+- go实现纯静态编译（CGO_ENABLED=0），各个项目实现独立，通过命令行参数传递功能模块名称，服务端根据功能模块名称调用对应的功能模块
+  - processor目录存放各个功能模块的代码（Go module：cmd + internal）
   - manager/web目录存放springboot的代码
   - manager/client目录存放vue的前端代码
-- 核心技术栈：rust + vue + springboot + netty + mysql
+- 核心技术栈：go + vue + springboot + netty + mysql
 - 项目用途：服务器数据备份系统
 - 核心约束：所有接口需加 Token 权限校验、遵循 RESTful 风格、数据库变化时需同步更新 migrations 目录下的迁移脚本
 - 每个单独项目结构：
@@ -14,8 +14,8 @@
   - README.md：项目说明文件
 ## 2. Setup & Development
 ### 2.1 开发运行
-- 基于wsl2的ubuntu系统中开发，使用wsl系统的node和rust以及java8、maven环境
-- 客户端业务采用rust编写，将业务代码打包为二进制文件，通过netty传输到服务端
+- 基于wsl2的ubuntu系统中开发，使用wsl系统的node和go以及java8、maven环境
+- 客户端业务采用go编写，将业务代码打包为二进制文件，通过netty传输到服务端
 - 客户端将功能切割，实现符合AI CLI的架构，每个功能模块独立，通过命令行参数传递功能模块名称，服务端根据功能模块名称调用对应的功能模块
 
 ### 2.3 数据库配置

@@ -5,53 +5,47 @@
 
 | 脚本          | 作用                                                       |
 | ------------- | ---------------------------------------------------------- |
-| `build.sh`    | 本地 release 构建（`--dev` 走 debug），打印产物路径        |
-| `package.sh`  | release 构建 + 把二进制 / 文档 / `.env.example` 打成归档   |
-| `cross.sh`    | 多平台交叉编译并分别归档（优先 `cross`，回退 `cargo`）    |
+| `build.sh`    | 本地优化构建（`--dev` 关闭优化），打印产物路径             |
+| `package.sh`  | 优化构建 + 把二进制 / 文档 / `.env.example` 打成归档       |
+| `cross.sh`    | 多平台交叉编译并分别归档（Go 原生 GOOS/GOARCH 切换）      |
 
 ## 用法
 
 ```bash
-./scripts/build.sh                       # 本地 release 构建
-./scripts/build.sh --dev                 # debug 构建
+./scripts/build.sh                       # 本地优化构建（输出 bin/rustto-client）
+./scripts/build.sh --dev                 # 关闭优化（便于调试）
+
 ./scripts/package.sh                     # 打包到 dist/
 
 ./scripts/cross.sh                       # 交叉编译全部默认目标
-./scripts/cross.sh x86_64-unknown-linux-musl   # 只编译某目标
-TARGETS="x86_64-unknown-linux-musl aarch64-unknown-linux-musl" ./scripts/cross.sh
+./scripts/cross.sh linux/arm64           # 只编译某目标（GOOS/GOARCH）
+TARGETS="linux/amd64 linux/arm64" ./scripts/cross.sh
 ```
 
 ## 默认交叉编译目标
 
-- `x86_64-unknown-linux-musl` / `aarch64-unknown-linux-musl` —— 纯静态 Linux 二进制
-- `x86_64-pc-windows-gnu` —— Windows
-- `x86_64-apple-darwin` / `aarch64-apple-darwin` —— macOS（Intel / Apple Silicon）
+- `linux/amd64` / `linux/arm64` / `linux/386` —— Linux（对应归档名 `x86_64/aarch64/i686-unknown-linux-musl`）
+- `windows/amd64` —— Windows（归档名 `x86_64-pc-windows-gnu`）
+- `darwin/amd64` / `darwin/arm64` —— macOS（Intel / Apple Silicon）
 
 ## 前置依赖
 
-- **本地构建**：仅需 Rust 工具链（`cargo`）。
-- **交叉编译（推荐）**：安装 [`cross`](https://github.com/cross-rs/cross) 与 Docker：
-  ```bash
-  cargo install cross
-  ```
-  `cross` 在容器内配好各平台工具链，开箱即用。
-- **交叉编译（回退，无 Docker）**：需为目标平台安装 rustup target 与 linker，例如：
-  ```bash
-  rustup target add x86_64-unknown-linux-musl
-  # macOS / Windows 目标还需要对应的 linker / SDK，跨机较麻烦，建议用 cross
-  ```
-  `cross.sh` 在回退模式下**不会因单个目标失败而中断**，会跳过并汇总成功 / 跳过数量。
+- **本地构建 / 交叉编译**：仅需 Go 工具链（1.24+）。Go 原生支持交叉编译：
+  脚本内部以 `CGO_ENABLED=0 GOOS=… GOARCH=… go build` 产出各平台静态二进制，
+  **无需 Docker、无需外部交叉工具链**。
 
 ## 产物
 
-归档统一输出到 `dist/`，命名 `rustto-client-<version>-<target>.{tar.gz,zip}`
-（已在 `.gitignore` 忽略）。
+- `build.sh` 输出到 `bin/`；`cross.sh` 中间产物在 `dist-bin/`（均已加入 `.gitignore`）。
+- 归档统一输出到 `dist/`，命名 `rustto-client-<version>-<target>.{tar.gz,zip}`
+  （已在 `.gitignore` 忽略）。
+- 版本号取自 `.env.example` 的 `CLIENT_VERSION`（与运行时默认一致）。
 
-## 单工具构建脚本
+## 容器镜像
 
-每个工具 crate 目录下还有各自的 `build.sh`（构建 + 单测该 crate）：
+配合根目录 `Dockerfile`（`FROM scratch`，只装静态二进制）：
 
 ```bash
-./crates/backup-file/build.sh
-./crates/backup-mysql/build.sh
+./scripts/cross.sh linux/amd64 linux/arm64   # 先产出 dist/ 归档
+docker build -t rustto-client:0.1.0 .
 ```

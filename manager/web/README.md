@@ -7,7 +7,7 @@
 - Spring Boot 2.7.18 / Java 8
 - MyBatis-Plus（ORM + 分页）
 - Flyway（数据库迁移，对应 AGENT.MD 的 migrations/）
-- Netty（与 Rust 客户端通信）
+- Netty（与 Go 客户端通信）
 - MySQL 8.0+
 - jjwt（Token 鉴权）、BCrypt（密码哈希）
 
@@ -51,7 +51,7 @@ mvn spring-boot:run
 mvn test
 ```
 
-Netty 默认监听 `9600`（与 Rust client 默认一致）。HTTP 默认 `8080`。
+Netty 默认监听 `9600`（与 Go client 默认一致）。HTTP 默认 `8080`。
 
 ## 主要接口（均需 Token，除 /api/auth/login）
 
@@ -72,7 +72,7 @@ Netty 默认监听 `9600`（与 Rust client 默认一致）。HTTP 默认 `8080`
 
 ## Netty 协议
 
-与 Rust client `core::protocol` 字节级对齐：
+与 Go client `internal/core/protocol` 字节级对齐：
 
 ```
 | magic 4B "RUST"(0x52555354) | length 4B BE(=1+payloadLen) | type 1B | payload JSON |

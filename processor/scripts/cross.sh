@@ -1,115 +1,68 @@
 #!/usr/bin/env bash
-# 交叉编译：为多个目标平台构建 release 二进制并打成归档到 dist/。
+# 交叉编译：为多个目标平台构建优化二进制并打成归档到 dist/。
 #
-# 后端选择：
-#   - 优先 `cross`（基于 Docker，链路最省心，能编译所有目标）。
-#     仅当 cross 已装 **且** Docker daemon 在线时启用。
-#   - 否则回退 `cargo build --target`：此时只有"本机链接器能处理"的目标可编译，
-#     不满足条件的目标会被优雅跳过并打印可操作的修复提示（不刷链接错误）。
+# Go 原生支持交叉编译：GOOS/GOARCH 直接切换，无需外部交叉工具链（CGO 关闭），
+# 产物为对应平台的静态可执行文件。
 #
 # 用法：
-#   ./scripts/cross.sh                              # 编译全部默认目标（不可行的自动跳过）
-#   ./scripts/cross.sh x86_64-unknown-linux-musl    # 只编译指定目标
+#   ./scripts/cross.sh                              # 编译全部默认目标
+#   ./scripts/cross.sh linux/amd64                  # 只编译指定目标（GOOS/GOARCH）
 # 环境变量：
-#   TARGETS="a b c"                                 # 覆盖默认目标列表
-#   FORCE=1                                         # 跳过预检，强制尝试每个目标
+#   TARGETS="linux/amd64 linux/arm64"               # 覆盖默认目标列表
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-VERSION="$(grep -m1 '^version' Cargo.toml | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')"
+# 版本号读取 .env.example 的 CLIENT_VERSION（与运行时默认一致）。
+VERSION="$(grep -m1 '^CLIENT_VERSION=' .env.example 2>/dev/null | cut -d= -f2)"
+VERSION="${VERSION:-0.1.0}"
 DIST="dist"
 mkdir -p "$DIST"
 
 DEFAULT_TARGETS=(
-  x86_64-unknown-linux-musl
-  aarch64-unknown-linux-musl
-  x86_64-pc-windows-gnu
+  linux/amd64
+  linux/arm64
+  linux/386
+  windows/amd64
+  darwin/amd64
+  darwin/arm64
 )
 TARGETS=("${@:-${TARGETS:-${DEFAULT_TARGETS[@]}}}")
-FORCE="${FORCE:-0}"
 
-# 选构建后端：cross 需要 cross 且 docker daemon 在线，否则回退 cargo。
-USE_CROSS=0
-if command -v cross >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-  USE_CROSS=1
-  BUILD=(cross build --release -p rustto-cli)
-  echo "==> 使用 cross（Docker），可编译全部目标"
-else
-  BUILD=(cargo build --release -p rustto-cli)
-  if command -v cross >/dev/null 2>&1; then
-    echo "==> 发现 cross 但 Docker daemon 不可用，回退宿主 cargo build --target"
-  else
-    echo "==> 未发现 cross，使用宿主 cargo build --target"
-  fi
-  echo "    仅本机链接器能处理的目标可编译，其余将预检跳过（FORCE=1 可强制尝试）"
-  echo "    想一次编译所有目标：启动 Docker 后用 cross"
-fi
-
-# 返回某 target 所需的外部链接器名；为空表示无需外部链接器（本机 lld self-contained 即可）。
-# 注：*-linux-musl 系列由 .cargo/config.toml 走 rust-lld + bundled crt，无需系统交叉 gcc；
-#     产物为静态 ELF，可直接入 docker / 任意 Linux 运行。
-target_linker() {
-  case "$1" in
-    x86_64-pc-windows-gnu) printf '%s\n' "x86_64-w64-mingw32-gcc" ;;
-    *-apple-darwin)        printf '%s\n' "osxcross" ;;   # Linux 上交叉到 macOS 需 osxcross + SDK
-    *)                     printf '\n' ;;                # 含 *-linux-musl（self-contained）
+# 把 GOOS/GOARCH 映射为归档命名（对齐原 Rust target 风格可读性）。
+target_name() {
+  local goos="$1" goarch="$2"
+  case "$goos:$goarch" in
+    linux:amd64)  echo "x86_64-unknown-linux-musl" ;;
+    linux:arm64)  echo "aarch64-unknown-linux-musl" ;;
+    linux:386)    echo "i686-unknown-linux-musl" ;;
+    windows:amd64) echo "x86_64-pc-windows-gnu" ;;
+    darwin:amd64)  echo "x86_64-apple-darwin" ;;
+    darwin:arm64)  echo "aarch64-apple-darwin" ;;
+    *)             echo "${goos}-${goarch}" ;;
   esac
 }
 
-# 目标可行性预检（仅回退 cargo 时执行；cross 走 docker 无需预检）。
-# 返回 0=可编译，1=跳过；跳过时打印可操作的修复提示。
-preflight() {
-  local t="$1"
-
-  # 1) rustup target std 是否已安装
-  if ! rustup target list --installed 2>/dev/null | grep -qx "$t"; then
-    echo "    !! [$t] 跳过：未安装 target std → rustup target add $t"
-    return 1
-  fi
-
-  # 2) 外部链接器是否存在
-  local linker; linker="$(target_linker "$t")"
-  if [[ -n "$linker" ]] && ! command -v "$linker" >/dev/null 2>&1; then
-    echo "    !! [$t] 跳过：缺少链接器 '$linker'"
-    case "$t" in
-      x86_64-pc-windows-gnu) echo "       apt install gcc-mingw-w64-x86-64（稳定版 rust self-contained 缺完整 mingw 运行时库，需系统 mingw）" ;;
-      *-apple-darwin)        echo "       Linux 上交叉到 macOS 需 osxcross + macOS SDK；建议在 macOS 上构建或用 cross+Docker" ;;
-    esac
-    return 1
-  fi
-
-  return 0
-}
-
-archive() {
-  local target="$1" bin="rustto-client"
-  [[ "$target" == *pc-windows* ]] && bin="rustto-client.exe"
-  local src="target/$target/release"
-  local pkg="$DIST/rustto-client-$VERSION-$target"
-  # 用 tar -C / zip -j 直接指定源目录，不切 cwd（避免输出相对路径找不到 dist/）
-  if [[ "$target" == *pc-windows* ]] && command -v zip >/dev/null 2>&1; then
-    zip -j "$pkg.zip" "$src/$bin" >/dev/null
-    echo "    → $pkg.zip"
-  else
-    [[ "$target" == *pc-windows* ]] && echo "    ! 未安装 zip，改打 .tar.gz（Windows 10+ 自带 tar 可解）"
-    tar -czf "$pkg.tar.gz" -C "$src" "$bin"
-    echo "    → $pkg.tar.gz"
-  fi
-}
-
-ok=0; skip=0; fail=0
+ok=0; fail=0
 for t in "${TARGETS[@]}"; do
-  echo "==> [$t]"
+  goos="${t%%/*}"
+  goarch="${t##*/}"
+  name="$(target_name "$goos" "$goarch")"
+  bin="rustto-client"
+  [[ "$goos" == "windows" ]] && bin="rustto-client.exe"
+  out="dist-bin/${goos}-${goarch}"
 
-  # cross 走 docker，不做本机预检；回退 cargo 时先预检（除非 FORCE=1）
-  if [[ "$USE_CROSS" -eq 0 && "$FORCE" -ne 1 ]]; then
-    if ! preflight "$t"; then
-      skip=$((skip+1)); continue
+  echo "==> [$t] ($name)"
+  if CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
+      go build -ldflags "-s -w" -trimpath -o "$out/$bin" ./cmd/rustto-client; then
+    pkg="$DIST/rustto-client-$VERSION-$name"
+    if [[ "$goos" == "windows" ]] && command -v zip >/dev/null 2>&1; then
+      zip -j "$pkg.zip" "$out/$bin" >/dev/null
+      echo "    → $pkg.zip"
+    else
+      [[ "$goos" == "windows" ]] && echo "    ! 未安装 zip，改打 .tar.gz（Windows 10+ 自带 tar 可解）"
+      tar -czf "$pkg.tar.gz" -C "$out" "$bin"
+      echo "    → $pkg.tar.gz"
     fi
-  fi
-
-  if "${BUILD[@]}" --target "$t"; then
-    archive "$t"
     ok=$((ok+1))
   else
     echo "    !! [$t] 构建失败，已跳过"
@@ -117,6 +70,6 @@ for t in "${TARGETS[@]}"; do
   fi
 done
 
-echo "完成：成功 $ok，预检跳过 $skip，构建失败 $fail。归档目录： $DIST"
-# 仅当真正构建失败时以非零退出；预检跳过属于优雅降级，不影响退出码
+echo "完成：成功 $ok，失败 $fail。归档目录： $DIST"
+# 仅当真正构建失败时以非零退出
 [[ "$fail" -gt 0 ]] && exit 1 || exit 0

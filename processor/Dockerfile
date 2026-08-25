@@ -1,10 +1,10 @@
 # rustto-client 容器镜像。
 #
-# 使用 scripts/cross.sh 产出的纯静态 musl 二进制（self-contained lld + bundled crt，
-# 无任何动态库依赖）。最终镜像 FROM scratch，只含一个 ~2.5MB 的可执行文件。
+# 使用 scripts/cross.sh 产出的静态二进制（CGO_ENABLED=0，无任何动态库依赖）。
+# 最终镜像 FROM scratch，只含一个可执行文件。
 #
 # 先交叉编译产出归档（在仓库 processor/ 下）：
-#   ./scripts/cross.sh x86_64-unknown-linux-musl aarch64-unknown-linux-musl
+#   ./scripts/cross.sh linux/amd64 linux/arm64
 #
 # 单架构构建（amd64）：
 #   docker build -t rustto-client:0.1.0 .

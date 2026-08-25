@@ -1,21 +1,17 @@
 #!/usr/bin/env bash
-# 本地 release 构建：编译 rustto-client 并打印产物路径。
+# 本地构建：编译 rustto-client 并打印产物路径。
 # 用法： ./scripts/build.sh [--dev]
-#   --dev  走 debug profile（默认 release）
+#   --dev  关闭优化、保留调试信息（默认优化并剥离符号表）
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-PROFILE="release"
-CARGO_FLAGS=(--release)
+FLAGS=(-ldflags "-s -w")
 if [[ "${1:-}" == "--dev" ]]; then
-  PROFILE="debug"
-  CARGO_FLAGS=()
+  FLAGS=()
 fi
 
-echo "==> cargo build ${CARGO_FLAGS[*]:-} -p rustto-cli"
-cargo build "${CARGO_FLAGS[@]}" -p rustto-cli
+echo "==> go build ${FLAGS[*]:-} ./cmd/rustto-client"
+go build "${FLAGS[@]}" -o bin/rustto-client ./cmd/rustto-client
 
-BIN="target/$PROFILE/rustto-client"
-[[ -x "$BIN" ]] || BIN="target/debug/rustto-client"
-echo "构建完成： $BIN"
-"$BIN" --version || true
+echo "构建完成： bin/rustto-client"
+./bin/rustto-client --version || true

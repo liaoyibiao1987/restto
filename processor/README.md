@@ -1,56 +1,65 @@
-# rustto client（Rust）
+# rustto client（Go）
 
-分布式服务器数据备份系统的客户端。Cargo workspace，纯 Rust，支持静态编译。
+分布式服务器数据备份系统的客户端。Go 单 module 多 package，CGO 关闭，支持静态编译。
 本端是一套 **agent 友好的 CLI**：所有备份能力以"工具（Tool）"形式按需注册、按名调度。
 
 ## 架构
 
 ```
-cli ──► tools(注册中心) ──► backup-file / backup-mysql / …(各工具 crate)
-   └► common(Tool 契约 / 产物 / 错误) ◄─────────────────────┘
-   └► core(协议 / 配置 / 日志 / 校验，★受保护不可修改)
+cmd/rustto-client（cli 主程序）
+   ──► internal/tools（注册中心）──► internal/backupfile / internal/backupmysql / …（各工具包）
+   ──► internal/common（Tool 契约 / 产物 / 错误）◄──────────────────┘
+   ──► internal/core（协议 / 配置 / 日志 / 校验，★受保护不可修改）
+   ──► internal/daemon（常驻进程：注册 / 心跳 / 任务执行 / 二进制接收）
 ```
 
-- `common`：`Tool` trait、`ToolOutput`、`ToolError`、`ToolInfo` —— 工具公共基座。
-- 每个工具是**独立 crate**，单独成目录（`Cargo.toml` + `src/` + `README.md` + `build.sh`），互不耦合。
-- `tools`：注册中心，把各工具 crate 聚合为 `registry()` / `lookup(name)`。
-- `cli`：只做发现 / 调度 / 输出，daemon 与 `tool run` 同源（都走 `tools::lookup`）。
+- `internal/common`：`Tool` 接口、`ToolOutput`、`ToolError`、`ToolInfo` —— 工具公共基座。
+- 每个工具是**独立 package**，单独成目录（含各自 `README.md`），互不耦合。
+- `internal/tools`：注册中心，把各工具包聚合为 `Registry()` / `Lookup(name)`。
+- `internal/daemon`：与 cli 同源的常驻进程，按 `module` 名调度工具。
+- `cmd/rustto-client`：只做发现 / 调度 / 输出，daemon 与 `tool run` 同源（都走 `tools.Lookup`）。
 
 ## 目录结构
 
 ```
 processor/
-├── crates/
-│   ├── core/          # ★核心工具类（协议/配置/日志/校验）—— AGENT.MD 不可修改边界
-│   ├── common/        # Tool 公共框架（trait / 产物 / 错误）
-│   ├── backup-file/   # 工具：文件/目录 tar.gz 备份
-│   ├── backup-mysql/  # 工具：mysqldump 导出 + gzip 备份
-│   ├── tools/         # 工具注册中心
-│   └── cli/           # 主二进制 rustto-client（agent 友好 CLI + daemon）
-├── scripts/           # 构建 / 打包 / 多平台交叉编译脚本
-├── .env               # 环境变量（不得提交）
-├── logs/              # 按日期滚动日志
-└── data/              # 备份产物 / 接收的二进制
+├── cmd/rustto-client/        # 主程序入口（agent 友好 CLI + daemon 调度）
+├── internal/
+│   ├── core/                 # ★核心工具类（协议/配置/日志/校验）—— AGENT.MD 不可修改边界
+│   │   ├── protocol/         # Netty 协议编解码（帧 + JSON）
+│   │   ├── config/           # .env / 环境变量配置加载
+│   │   ├── crypto/           # sha256（字节 / 文件）
+│   │   └── logger/           # 按日期滚动日志 + stdout
+│   ├── common/               # Tool 公共框架（接口 / 产物 / 错误）
+│   ├── backupfile/           # 工具：文件/目录 tar.gz 备份
+│   ├── backupmysql/          # 工具：mysqldump 导出 + gzip 备份
+│   ├── tools/                # 工具注册中心
+│   └── daemon/               # 常驻 daemon（连接 Manager）
+├── scripts/                  # 构建 / 打包 / 多平台交叉编译脚本
+├── go.mod                    # Go module 定义（rustto-client）
+├── .env                      # 环境变量（不得提交）
+├── logs/                     # 按日期滚动日志
+└── data/                     # 备份产物 / 接收的二进制
 ```
 
 ## 命令行（agent 友好）
 
 ```bash
 # 常驻：连接 Manager，注册/心跳，接收并执行任务
-cargo run -p rustto-cli -- daemon
+go run ./cmd/rustto-client daemon
 
 # —— agent 调用入口（按名调度 + JSON 参数）——
-cargo run -p rustto-cli -- tool list                                  # 发现可用工具
-cargo run -p rustto-cli -- tool schema backup_file                    # 查参数格式
-cargo run -p rustto-cli -- tool run backup_file \
+go run ./cmd/rustto-client tool list                                  # 发现可用工具
+go run ./cmd/rustto-client tool schema backup_file                    # 查参数格式
+go run ./cmd/rustto-client tool run backup_file \
   --args '{"path":"/data","dest":"/backup/data.tar.gz"}'             # JSON 参数运行
 # 参数来源： --args '<json>' / --args-file ./a.json / --args -（stdin）/ 不给则 {}
 
 # —— 兼容旧命令 ——
-cargo run -p rustto-cli -- backup-file --path /data --dest /backup/data.tar.gz
-cargo run -p rustto-cli -- backup-mysql --host 127.0.0.1 --port 3306 \
+go run ./cmd/rustto-client backup-file --path /data --dest /backup/data.tar.gz
+go run ./cmd/rustto-client backup-mysql --host 127.0.0.1 --port 3306 \
   --user root --password *** --database mydb --dest /backup/mydb.sql.gz
-cargo run -p rustto-cli -- run-module backup_file \
+go run ./cmd/rustto-client run-module backup_file \
   --args '{"path":"/data","dest":"/backup/data.tar.gz"}'
 ```
 
@@ -63,27 +72,28 @@ cargo run -p rustto-cli -- run-module backup_file \
 ## 编译
 
 ```bash
-cargo build                # 全量开发构建
-cargo test --workspace     # 全部单测（协议编解码、打包、Tool 契约、调度等）
-./scripts/build.sh         # release 构建
-./scripts/package.sh       # 打包到 dist/
-./scripts/cross.sh         # 多平台交叉编译（详见 scripts/README.md）
+go build ./...                  # 全量构建
+go test ./...                   # 全部单测（协议编解码、打包、Tool 契约、调度等）
+go vet ./...                    # 静态检查
+./scripts/build.sh              # 优化构建到 bin/
+./scripts/package.sh            # 打包到 dist/
+./scripts/cross.sh              # 多平台交叉编译（详见 scripts/README.md）
 ```
 
 ### 多平台交叉编译
 
 ```bash
-cargo install cross        # 一次性安装（基于 Docker，开箱即用）
-./scripts/cross.sh         # 构建 linux(musl)/windows/macOS 多平台二进制并归档到 dist/
+./scripts/cross.sh              # 构建 linux/windows/macOS 多平台二进制并归档到 dist/
+./scripts/cross.sh linux/arm64  # 只编译指定 GOOS/GOARCH
 ```
-默认目标含 `x86_64/aarch64-unknown-linux-musl`、`x86_64-pc-windows-gnu`、
-`x86_64/aarch64-apple-darwin`，详见 [`scripts/README.md`](scripts/README.md)。
+Go 原生交叉编译（`CGO_ENABLED=0 GOOS=… GOARCH=… go build`），无需 Docker 与外部工具链。
+默认目标含 `linux/amd64`、`linux/arm64`、`linux/386`、`windows/amd64`、
+`darwin/amd64`、`darwin/arm64`，详见 [`scripts/README.md`](scripts/README.md)。
 
 ## 新增一个工具
 
-1. 在 `crates/<your-tool>/` 新建 crate，实现 `rustto_common::Tool`（带 `README.md` + `build.sh`）。
-2. 在 `crates/tools/Cargo.toml` 加依赖，在 `registry()` 里 `push` 一行。
-3. 在本 `Cargo.toml` 的 `members` 追加该 crate 目录。
+1. 在 `internal/<your-tool>/` 新建包，实现 `common.Tool` 接口（带 `README.md`）。
+2. 在 `internal/tools/tools.go` import 该包，并在 `Registry()` 里 append 一行。
 
 cli / daemon 代码无需改动 —— `tool list` / `tool schema` / `tool run` 立即可用，
 daemon 也能通过 `TASK_COMMAND.module = "<your-tool>"` 调度。
@@ -98,6 +108,6 @@ daemon 收到 `TASK_COMMAND{module, args}` 后按 `module` 名调度到对应工
 
 ## 边界（AGENT.MD）
 
-- `crates/core` 为核心工具类，**不得修改**。
+- `internal/core` 为核心工具类，**不得修改**。
 - `.env` 为密钥文件，**不得修改 / 提交**（用 `.env.example` 做模板）。
 - 新增依赖前先检查现有依赖，禁止重复引入同类库。
