@@ -3,7 +3,7 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.configuration.runtimes": [
         {
-            "name": "JavaSE-17",
+            "name": "JavaSE-1.8",
             "path": "/usr/lib/jvm/java-8-openjdk-amd64"
         }
     ],
@@ -23,9 +23,7 @@
     ],
     "java.project.referencedLibrariesIncludeSelf": true,
     "java.project.referencedLibrariesIncludeSubdirectories": true,
-
     "java.project.referencedLibrariesIncludeJars": true,
     "java.compile.nullAnalysis.mode": "automatic",
     "remote.autoForwardPortsFallback": 0
-
 }
