@@ -1,4 +1,4 @@
-package com.restto.manager.dto;
+package com.restto.manager.dto.system.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

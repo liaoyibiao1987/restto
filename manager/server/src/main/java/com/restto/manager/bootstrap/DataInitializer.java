@@ -1,9 +1,9 @@
 package com.restto.manager.bootstrap;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.restto.manager.entity.SysRole;
-import com.restto.manager.entity.SysUser;
-import com.restto.manager.entity.SysUserRole;
+import com.restto.manager.entity.system.role.SysRole;
+import com.restto.manager.entity.system.user.SysUser;
+import com.restto.manager.entity.system.user.SysUserRole;
 import com.restto.manager.mapper.SysRoleMapper;
 import com.restto.manager.mapper.SysUserMapper;
 import com.restto.manager.mapper.SysUserRoleMapper;
@@ -43,7 +43,7 @@ public class DataInitializer implements ApplicationRunner {
 
     private final SysUserRoleMapper sysUserRoleMapper;
 
-    /** 与 {@link com.restto.manager.service.impl.AuthServiceImpl} 保持一致的编码器惯例。 */
+    /** 与 {@link com.restto.manager.service.impl.system.auth.AuthServiceImpl} 保持一致的编码器惯例。 */
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Value("${restto.init.admin-username:admin}")

@@ -1,17 +1,17 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.system.auth;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.restto.manager.common.BusinessException;
 import com.restto.manager.common.ResultCode;
-import com.restto.manager.dto.LoginRequest;
-import com.restto.manager.dto.LoginResponse;
-import com.restto.manager.dto.UserInfoResponse;
-import com.restto.manager.entity.SysUser;
+import com.restto.manager.dto.system.auth.LoginRequest;
+import com.restto.manager.dto.system.auth.LoginResponse;
+import com.restto.manager.dto.system.auth.UserInfoResponse;
+import com.restto.manager.entity.system.user.SysUser;
 import com.restto.manager.mapper.SysUserMapper;
 import com.restto.manager.security.JwtUtil;
-import com.restto.manager.service.AuthService;
-import com.restto.manager.service.SysPermissionService;
-import com.restto.manager.service.SysRoleService;
+import com.restto.manager.service.system.auth.AuthService;
+import com.restto.manager.service.system.permission.SysPermissionService;
+import com.restto.manager.service.system.role.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

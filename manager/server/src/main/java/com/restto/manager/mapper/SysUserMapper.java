@@ -1,7 +1,7 @@
 package com.restto.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.restto.manager.entity.SysUser;
+import com.restto.manager.entity.system.user.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -1,4 +1,4 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.protocol;
 
 /**
  * Netty 协议消息类型（字节码与 Rust client 的 protocol::MessageType 一一对应）。

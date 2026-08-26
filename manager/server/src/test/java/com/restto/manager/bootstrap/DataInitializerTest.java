@@ -1,8 +1,8 @@
 package com.restto.manager.bootstrap;
 
-import com.restto.manager.entity.SysRole;
-import com.restto.manager.entity.SysUser;
-import com.restto.manager.entity.SysUserRole;
+import com.restto.manager.entity.system.role.SysRole;
+import com.restto.manager.entity.system.user.SysUser;
+import com.restto.manager.entity.system.user.SysUserRole;
 import com.restto.manager.mapper.SysRoleMapper;
 import com.restto.manager.mapper.SysUserMapper;
 import com.restto.manager.mapper.SysUserRoleMapper;

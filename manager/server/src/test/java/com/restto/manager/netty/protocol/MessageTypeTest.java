@@ -1,4 +1,4 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.protocol;
 
 import org.junit.jupiter.api.Test;
 

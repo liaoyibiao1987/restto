@@ -1,13 +1,13 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.backup.record;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.BackupRecord;
+import com.restto.manager.entity.backup.record.BackupRecord;
 import com.restto.manager.mapper.BackupRecordMapper;
-import com.restto.manager.netty.message.ProtocolMessages.TaskResult;
-import com.restto.manager.service.BackupRecordService;
+import com.restto.manager.netty.protocol.ProtocolMessages.TaskResult;
+import com.restto.manager.service.backup.record.BackupRecordService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

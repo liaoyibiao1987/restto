@@ -1,4 +1,4 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.backup.binary;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,10 +7,10 @@ import com.restto.manager.common.BusinessException;
 import com.restto.manager.common.PageResult;
 import com.restto.manager.common.ResultCode;
 import com.restto.manager.config.BackupProperties;
-import com.restto.manager.entity.ClientBinary;
+import com.restto.manager.entity.backup.binary.ClientBinary;
 import com.restto.manager.mapper.ClientBinaryMapper;
-import com.restto.manager.netty.BinaryDistributor;
-import com.restto.manager.service.BinaryService;
+import com.restto.manager.netty.binary.BinaryDistributor;
+import com.restto.manager.service.backup.binary.BinaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

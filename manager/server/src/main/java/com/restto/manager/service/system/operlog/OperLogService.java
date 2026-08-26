@@ -1,8 +1,8 @@
-package com.restto.manager.service;
+package com.restto.manager.service.system.operlog;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.SysOperLog;
+import com.restto.manager.entity.system.operlog.SysOperLog;
 
 /**
  * 操作日志服务。

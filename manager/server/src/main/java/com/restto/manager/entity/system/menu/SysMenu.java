@@ -1,4 +1,4 @@
-package com.restto.manager.entity;
+package com.restto.manager.entity.system.menu;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

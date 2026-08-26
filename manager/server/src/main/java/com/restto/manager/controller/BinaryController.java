@@ -2,11 +2,11 @@ package com.restto.manager.controller;
 
 import com.restto.manager.common.PageResult;
 import com.restto.manager.common.Result;
-import com.restto.manager.dto.BinaryPushRequest;
-import com.restto.manager.entity.ClientBinary;
+import com.restto.manager.dto.backup.binary.BinaryPushRequest;
+import com.restto.manager.entity.backup.binary.ClientBinary;
 import com.restto.manager.security.OperLog;
 import com.restto.manager.security.RequirePermission;
-import com.restto.manager.service.BinaryService;
+import com.restto.manager.service.backup.binary.BinaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

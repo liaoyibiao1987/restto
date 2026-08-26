@@ -1,8 +1,8 @@
-package com.restto.manager.service;
+package com.restto.manager.service.backup.binary;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.ClientBinary;
+import com.restto.manager.entity.backup.binary.ClientBinary;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

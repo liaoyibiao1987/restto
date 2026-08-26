@@ -1,7 +1,9 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.codec;
 
-import com.restto.manager.netty.message.ProtocolMessages.RegisterMessage;
-import com.restto.manager.netty.message.ProtocolMessages.TaskResult;
+import com.restto.manager.netty.protocol.MessageType;
+import com.restto.manager.netty.protocol.InboundMessage;
+import com.restto.manager.netty.protocol.ProtocolMessages.RegisterMessage;
+import com.restto.manager.netty.protocol.ProtocolMessages.TaskResult;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.junit.jupiter.api.Test;

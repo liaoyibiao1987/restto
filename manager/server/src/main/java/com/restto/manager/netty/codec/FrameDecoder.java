@@ -1,5 +1,6 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.codec;
 
+import com.restto.manager.netty.protocol.InboundMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;

@@ -2,9 +2,9 @@ package com.restto.manager.controller;
 
 import com.restto.manager.common.PageResult;
 import com.restto.manager.common.Result;
-import com.restto.manager.entity.BackupRecord;
+import com.restto.manager.entity.backup.record.BackupRecord;
 import com.restto.manager.security.RequirePermission;
-import com.restto.manager.service.BackupRecordService;
+import com.restto.manager.service.backup.record.BackupRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

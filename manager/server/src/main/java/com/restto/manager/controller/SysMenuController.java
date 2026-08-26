@@ -1,12 +1,12 @@
 package com.restto.manager.controller;
 
 import com.restto.manager.common.Result;
-import com.restto.manager.dto.MenuTreeNode;
-import com.restto.manager.dto.SysMenuRequest;
-import com.restto.manager.entity.SysMenu;
+import com.restto.manager.dto.system.menu.MenuTreeNode;
+import com.restto.manager.dto.system.menu.SysMenuRequest;
+import com.restto.manager.entity.system.menu.SysMenu;
 import com.restto.manager.security.OperLog;
 import com.restto.manager.security.RequirePermission;
-import com.restto.manager.service.SysMenuService;
+import com.restto.manager.service.system.menu.SysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

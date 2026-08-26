@@ -1,7 +1,7 @@
 package com.restto.manager.security;
 
-import com.restto.manager.dto.MenuTreeNode;
-import com.restto.manager.entity.SysMenu;
+import com.restto.manager.dto.system.menu.MenuTreeNode;
+import com.restto.manager.entity.system.menu.SysMenu;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

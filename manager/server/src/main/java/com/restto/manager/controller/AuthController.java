@@ -1,13 +1,13 @@
 package com.restto.manager.controller;
 
 import com.restto.manager.common.Result;
-import com.restto.manager.dto.LoginRequest;
-import com.restto.manager.dto.LoginResponse;
-import com.restto.manager.dto.MenuTreeNode;
-import com.restto.manager.dto.UserInfoResponse;
+import com.restto.manager.dto.system.auth.LoginRequest;
+import com.restto.manager.dto.system.auth.LoginResponse;
+import com.restto.manager.dto.system.menu.MenuTreeNode;
+import com.restto.manager.dto.system.auth.UserInfoResponse;
 import com.restto.manager.security.UserContext;
-import com.restto.manager.service.AuthService;
-import com.restto.manager.service.SysMenuService;
+import com.restto.manager.service.system.auth.AuthService;
+import com.restto.manager.service.system.menu.SysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

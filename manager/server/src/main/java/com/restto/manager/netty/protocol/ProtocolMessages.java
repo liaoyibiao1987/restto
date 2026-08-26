@@ -1,4 +1,4 @@
-package com.restto.manager.netty.message;
+package com.restto.manager.netty.protocol;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;

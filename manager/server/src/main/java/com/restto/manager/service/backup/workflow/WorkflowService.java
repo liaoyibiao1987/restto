@@ -1,10 +1,10 @@
-package com.restto.manager.service;
+package com.restto.manager.service.backup.workflow;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.dto.WorkflowSaveRequest;
-import com.restto.manager.dto.WorkflowView;
-import com.restto.manager.entity.Workflow;
+import com.restto.manager.dto.backup.workflow.WorkflowSaveRequest;
+import com.restto.manager.dto.backup.workflow.WorkflowView;
+import com.restto.manager.entity.backup.workflow.Workflow;
 
 /**
  * 工作流定义服务（CRUD + 整图保存）。

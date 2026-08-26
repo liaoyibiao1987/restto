@@ -1,7 +1,7 @@
 package com.restto.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.restto.manager.entity.WorkflowNode;
+import com.restto.manager.entity.backup.workflow.WorkflowNode;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

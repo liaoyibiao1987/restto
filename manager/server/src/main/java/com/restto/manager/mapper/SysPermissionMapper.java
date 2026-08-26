@@ -1,7 +1,7 @@
 package com.restto.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.restto.manager.entity.SysPermission;
+import com.restto.manager.entity.system.permission.SysPermission;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

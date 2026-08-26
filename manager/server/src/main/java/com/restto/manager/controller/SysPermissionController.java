@@ -2,9 +2,9 @@ package com.restto.manager.controller;
 
 import com.restto.manager.common.PageResult;
 import com.restto.manager.common.Result;
-import com.restto.manager.entity.SysPermission;
+import com.restto.manager.entity.system.permission.SysPermission;
 import com.restto.manager.security.RequirePermission;
-import com.restto.manager.service.SysPermissionService;
+import com.restto.manager.service.system.permission.SysPermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

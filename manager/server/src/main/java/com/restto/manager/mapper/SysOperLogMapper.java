@@ -1,7 +1,7 @@
 package com.restto.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.restto.manager.entity.SysOperLog;
+import com.restto.manager.entity.system.operlog.SysOperLog;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

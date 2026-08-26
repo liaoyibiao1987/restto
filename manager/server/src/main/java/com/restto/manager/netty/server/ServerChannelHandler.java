@@ -1,14 +1,17 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.server;
 
-import com.restto.manager.entity.BackupNode;
-import com.restto.manager.netty.message.ProtocolMessages.BinaryAck;
-import com.restto.manager.netty.message.ProtocolMessages.Heartbeat;
-import com.restto.manager.netty.message.ProtocolMessages.RegisterAck;
-import com.restto.manager.netty.message.ProtocolMessages.RegisterMessage;
-import com.restto.manager.netty.message.ProtocolMessages.TaskResult;
-import com.restto.manager.service.BackupRecordService;
-import com.restto.manager.service.NodeService;
-import com.restto.manager.service.WorkflowExecutionService;
+import com.restto.manager.netty.protocol.MessageType;
+import com.restto.manager.netty.codec.ProtocolCodec;
+import com.restto.manager.netty.protocol.InboundMessage;
+import com.restto.manager.entity.backup.node.BackupNode;
+import com.restto.manager.netty.protocol.ProtocolMessages.BinaryAck;
+import com.restto.manager.netty.protocol.ProtocolMessages.Heartbeat;
+import com.restto.manager.netty.protocol.ProtocolMessages.RegisterAck;
+import com.restto.manager.netty.protocol.ProtocolMessages.RegisterMessage;
+import com.restto.manager.netty.protocol.ProtocolMessages.TaskResult;
+import com.restto.manager.service.backup.record.BackupRecordService;
+import com.restto.manager.service.backup.node.NodeService;
+import com.restto.manager.service.backup.workflow.WorkflowExecutionService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.RequiredArgsConstructor;

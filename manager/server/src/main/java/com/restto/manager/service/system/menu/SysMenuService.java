@@ -1,9 +1,9 @@
-package com.restto.manager.service;
+package com.restto.manager.service.system.menu;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.restto.manager.dto.MenuTreeNode;
-import com.restto.manager.dto.SysMenuRequest;
-import com.restto.manager.entity.SysMenu;
+import com.restto.manager.dto.system.menu.MenuTreeNode;
+import com.restto.manager.dto.system.menu.SysMenuRequest;
+import com.restto.manager.entity.system.menu.SysMenu;
 
 import java.util.List;
 

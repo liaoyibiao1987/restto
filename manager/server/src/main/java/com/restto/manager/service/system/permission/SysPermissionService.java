@@ -1,8 +1,8 @@
-package com.restto.manager.service;
+package com.restto.manager.service.system.permission;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.SysPermission;
+import com.restto.manager.entity.system.permission.SysPermission;
 
 import java.util.Set;
 

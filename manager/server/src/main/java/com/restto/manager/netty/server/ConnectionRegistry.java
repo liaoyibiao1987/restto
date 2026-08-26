@@ -1,5 +1,7 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.server;
 
+import com.restto.manager.netty.protocol.MessageType;
+import com.restto.manager.netty.codec.ProtocolCodec;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

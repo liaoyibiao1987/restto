@@ -1,4 +1,4 @@
-package com.restto.manager.dto;
+package com.restto.manager.dto.system.role;
 
 import lombok.Data;
 

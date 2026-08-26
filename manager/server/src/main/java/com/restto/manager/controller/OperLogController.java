@@ -2,10 +2,10 @@ package com.restto.manager.controller;
 
 import com.restto.manager.common.PageResult;
 import com.restto.manager.common.Result;
-import com.restto.manager.entity.SysOperLog;
+import com.restto.manager.entity.system.operlog.SysOperLog;
 import com.restto.manager.security.OperLog;
 import com.restto.manager.security.RequirePermission;
-import com.restto.manager.service.OperLogService;
+import com.restto.manager.service.system.operlog.OperLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

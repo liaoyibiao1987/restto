@@ -1,9 +1,9 @@
-package com.restto.manager.service;
+package com.restto.manager.service.backup.record;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.BackupRecord;
-import com.restto.manager.netty.message.ProtocolMessages.TaskResult;
+import com.restto.manager.entity.backup.record.BackupRecord;
+import com.restto.manager.netty.protocol.ProtocolMessages.TaskResult;
 
 /**
  * 备份记录服务。

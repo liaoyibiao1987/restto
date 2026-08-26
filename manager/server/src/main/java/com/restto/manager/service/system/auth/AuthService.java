@@ -1,8 +1,8 @@
-package com.restto.manager.service;
+package com.restto.manager.service.system.auth;
 
-import com.restto.manager.dto.LoginRequest;
-import com.restto.manager.dto.LoginResponse;
-import com.restto.manager.dto.UserInfoResponse;
+import com.restto.manager.dto.system.auth.LoginRequest;
+import com.restto.manager.dto.system.auth.LoginResponse;
+import com.restto.manager.dto.system.auth.UserInfoResponse;
 
 /**
  * 鉴权服务。

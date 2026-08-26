@@ -1,8 +1,8 @@
-package com.restto.manager.service;
+package com.restto.manager.service.backup.node;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.BackupNode;
+import com.restto.manager.entity.backup.node.BackupNode;
 
 /**
  * 节点服务。

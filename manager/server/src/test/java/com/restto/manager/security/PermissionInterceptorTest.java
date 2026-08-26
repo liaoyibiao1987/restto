@@ -2,8 +2,8 @@ package com.restto.manager.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restto.manager.common.ResultCode;
-import com.restto.manager.service.SysPermissionService;
-import com.restto.manager.service.SysRoleService;
+import com.restto.manager.service.system.permission.SysPermissionService;
+import com.restto.manager.service.system.role.SysRoleService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

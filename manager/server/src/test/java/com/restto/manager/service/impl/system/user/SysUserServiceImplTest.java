@@ -1,6 +1,6 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.system.user;
 
-import com.restto.manager.entity.SysUser;
+import com.restto.manager.entity.system.user.SysUser;
 import com.restto.manager.mapper.SysRoleMapper;
 import com.restto.manager.mapper.SysUserMapper;
 import com.restto.manager.mapper.SysUserRoleMapper;

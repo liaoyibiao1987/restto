@@ -1,10 +1,10 @@
-package com.restto.manager.service;
+package com.restto.manager.service.system.role;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.dto.SysRoleCreateRequest;
-import com.restto.manager.dto.SysRoleUpdateRequest;
-import com.restto.manager.entity.SysRole;
+import com.restto.manager.dto.system.role.SysRoleCreateRequest;
+import com.restto.manager.dto.system.role.SysRoleUpdateRequest;
+import com.restto.manager.entity.system.role.SysRole;
 
 import java.util.List;
 

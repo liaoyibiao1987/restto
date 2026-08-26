@@ -1,13 +1,13 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.system.permission;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.entity.SysPermission;
+import com.restto.manager.entity.system.permission.SysPermission;
 import com.restto.manager.mapper.SysPermissionMapper;
 import com.restto.manager.security.PermissionCache;
-import com.restto.manager.service.SysPermissionService;
+import com.restto.manager.service.system.permission.SysPermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

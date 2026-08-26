@@ -1,8 +1,8 @@
 package com.restto.manager.scheduler;
 
-import com.restto.manager.entity.Workflow;
-import com.restto.manager.service.WorkflowExecutionService;
-import com.restto.manager.service.WorkflowService;
+import com.restto.manager.entity.backup.workflow.Workflow;
+import com.restto.manager.service.backup.workflow.WorkflowExecutionService;
+import com.restto.manager.service.backup.workflow.WorkflowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

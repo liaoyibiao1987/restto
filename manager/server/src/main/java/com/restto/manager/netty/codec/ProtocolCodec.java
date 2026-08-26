@@ -1,5 +1,7 @@
-package com.restto.manager.netty;
+package com.restto.manager.netty.codec;
 
+import com.restto.manager.netty.protocol.MessageType;
+import com.restto.manager.netty.protocol.InboundMessage;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

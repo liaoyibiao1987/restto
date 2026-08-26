@@ -1,16 +1,16 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.system.menu;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.restto.manager.common.BusinessException;
 import com.restto.manager.common.ResultCode;
-import com.restto.manager.dto.MenuTreeNode;
-import com.restto.manager.dto.SysMenuRequest;
-import com.restto.manager.entity.SysMenu;
+import com.restto.manager.dto.system.menu.MenuTreeNode;
+import com.restto.manager.dto.system.menu.SysMenuRequest;
+import com.restto.manager.entity.system.menu.SysMenu;
 import com.restto.manager.mapper.SysMenuMapper;
 import com.restto.manager.security.MenuTreeBuilder;
-import com.restto.manager.service.SysMenuService;
-import com.restto.manager.service.SysRoleService;
+import com.restto.manager.service.system.menu.SysMenuService;
+import com.restto.manager.service.system.role.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

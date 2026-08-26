@@ -1,4 +1,4 @@
-package com.restto.manager.dto;
+package com.restto.manager.dto.backup.binary;
 
 import lombok.Data;
 

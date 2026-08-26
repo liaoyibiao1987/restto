@@ -1,7 +1,7 @@
-package com.restto.manager.service.impl;
+package com.restto.manager.service.impl.system.role;
 
 import com.restto.manager.common.BusinessException;
-import com.restto.manager.entity.SysRole;
+import com.restto.manager.entity.system.role.SysRole;
 import com.restto.manager.mapper.SysRoleMapper;
 import com.restto.manager.mapper.SysRoleMenuMapper;
 import com.restto.manager.mapper.SysRolePermissionMapper;

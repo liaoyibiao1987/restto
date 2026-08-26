@@ -1,11 +1,11 @@
-package com.restto.manager.service;
+package com.restto.manager.service.system.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.restto.manager.common.PageResult;
-import com.restto.manager.dto.SysUserCreateRequest;
-import com.restto.manager.dto.SysUserUpdateRequest;
-import com.restto.manager.dto.SysUserView;
-import com.restto.manager.entity.SysUser;
+import com.restto.manager.dto.system.user.SysUserCreateRequest;
+import com.restto.manager.dto.system.user.SysUserUpdateRequest;
+import com.restto.manager.dto.system.user.SysUserView;
+import com.restto.manager.entity.system.user.SysUser;
 
 import java.util.List;
 

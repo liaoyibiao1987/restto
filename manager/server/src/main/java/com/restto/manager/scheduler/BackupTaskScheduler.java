@@ -1,7 +1,7 @@
 package com.restto.manager.scheduler;
 
-import com.restto.manager.entity.BackupTask;
-import com.restto.manager.service.BackupTaskService;
+import com.restto.manager.entity.backup.task.BackupTask;
+import com.restto.manager.service.backup.task.BackupTaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
