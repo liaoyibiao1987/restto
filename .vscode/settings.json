@@ -24,6 +24,6 @@
     "java.project.referencedLibrariesIncludeSelf": true,
     "java.project.referencedLibrariesIncludeSubdirectories": true,
     "java.project.referencedLibrariesIncludeJars": true,
-    "java.compile.nullAnalysis.mode": "automatic",
+    "java.compile.nullAnalysis.mode": "disabled",
     "remote.autoForwardPortsFallback": 0
 }
