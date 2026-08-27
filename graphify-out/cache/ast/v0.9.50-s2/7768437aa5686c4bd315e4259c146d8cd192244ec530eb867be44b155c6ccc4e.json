@@ -1,0 +1,1 @@
+{"nodes": [{"id": "pkg_restto_client", "label": "restto-client", "file_type": "code", "type": "package", "ecosystem": "go", "source_file": "processor/go.mod", "source_location": "L1"}], "edges": []}
