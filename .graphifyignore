@@ -1,0 +1,13 @@
+.DS_Store
+*.iml
+.idea/
+*.log
+.history/
+**/log/
+**/logs/
+**/node_modules/
+**/out/
+**/target/
+**/dist/
+**/build/
+**/tmp/
