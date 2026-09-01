@@ -50,18 +50,18 @@ restto-client tool run backup_file --args '{"path":"/data","dest":"/backup/data.
 ## 运行 / 编译
 
 ```bash
-go run ./cmd/restto-client tool list    # 直接运行
-go build ./cmd/restto-client            # 构建
-go test ./cmd/restto-client/            # 单测
+go run ./client/restto tool list    # 直接运行
+go build ./client/restto            # 构建
+go test ./client/restto/            # 单测
 ```
 
 ## 架构关系
 
 ```
-cmd/restto-client ──► tools(注册中心) ──► backupfile / backupmysql / …（各工具包）
-                 └► common(Tool 契约) ◄─────────────────┘
-                 └► core(协议/配置/日志/校验，受保护)
-                 └► daemon(常驻进程，与 tool run 同源调度)
+client/restto ──► tools(注册中心) ──► backupfile / backupmysql / …（各工具包）
+              └► common(Tool 契约) ◄─────────────────┘
+              └► core(协议/配置/日志/校验，受保护)
+              └► daemon(常驻进程，与 tool run 同源调度)
 ```
 
 daemon 接收 `TASK_COMMAND{module, args}` 后，按 `module` 名经 `tools.Lookup`

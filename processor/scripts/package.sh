@@ -14,7 +14,7 @@ BIN_NAME="restto-client"
 [[ "$(go env GOOS)" == "windows" ]] && BIN_NAME="restto-client.exe"
 
 echo "==> 优化构建（host=$TARGET, version=$VERSION）"
-go build -ldflags "-s -w" -o "bin/$BIN_NAME" ./cmd/restto-client
+go build -ldflags "-s -w" -o "bin/$BIN_NAME" ./client/restto
 
 echo "==> 收集产物"
 rm -rf "$DIST" "$STAGE"

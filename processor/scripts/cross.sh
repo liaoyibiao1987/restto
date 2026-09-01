@@ -53,7 +53,7 @@ for t in "${TARGETS[@]}"; do
 
   echo "==> [$t] ($name)"
   if CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
-      go build -ldflags "-s -w" -trimpath -o "$out/$bin" ./cmd/restto-client; then
+      go build -ldflags "-s -w" -trimpath -o "$out/$bin" ./client/restto; then
     pkg="$DIST/restto-client-$VERSION-$name"
     if [[ "$goos" == "windows" ]] && command -v zip >/dev/null 2>&1; then
       zip -j "$pkg.zip" "$out/$bin" >/dev/null

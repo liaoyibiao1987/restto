@@ -10,8 +10,8 @@ if [[ "${1:-}" == "--dev" ]]; then
   FLAGS=()
 fi
 
-echo "==> go build ${FLAGS[*]:-} ./cmd/restto-client"
-go build "${FLAGS[@]}" -o bin/restto-client ./cmd/restto-client
+echo "==> go build ${FLAGS[*]:-} ./client/restto"
+go build "${FLAGS[@]}" -o bin/restto-client ./client/restto
 
 echo "构建完成： bin/restto-client"
 ./bin/restto-client --version || true

@@ -54,7 +54,7 @@ cd manager/web && mvn spring-boot:run
 cd manager/client && npm install && npm run dev   # http://127.0.0.1:5173
 
 # 4) 客户端（另起终端，先把 .env 的 NODE_TOKEN 改为节点创建时返回的 Token）
-cd processor && go run ./cmd/restto-client daemon
+cd processor && go run ./client/restto daemon
 ```
 
 ## 约束（AGENT.MD）

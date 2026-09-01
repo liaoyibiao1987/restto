@@ -6,7 +6,7 @@
 ## 架构
 
 ```
-cmd/restto-client（cli 主程序）
+client/restto（cli 主程序）
    ──► internal/tools（注册中心）──► internal/backupfile / internal/backupmysql / …（各工具包）
    ──► internal/common（Tool 契约 / 产物 / 错误）◄──────────────────┘
    ──► internal/core（协议 / 配置 / 日志 / 校验，★受保护不可修改）
@@ -17,13 +17,13 @@ cmd/restto-client（cli 主程序）
 - 每个工具是**独立 package**，单独成目录（含各自 `README.md`），互不耦合。
 - `internal/tools`：注册中心，把各工具包聚合为 `Registry()` / `Lookup(name)`。
 - `internal/daemon`：与 cli 同源的常驻进程，按 `module` 名调度工具。
-- `cmd/restto-client`：只做发现 / 调度 / 输出，daemon 与 `tool run` 同源（都走 `tools.Lookup`）。
+- `client/restto`：只做发现 / 调度 / 输出，daemon 与 `tool run` 同源（都走 `tools.Lookup`）。
 
 ## 目录结构
 
 ```
 processor/
-├── cmd/restto-client/        # 主程序入口（agent 友好 CLI + daemon 调度）
+├── client/restto/            # 主程序入口（agent 友好 CLI + daemon 调度）
 ├── internal/
 │   ├── core/                 # ★核心工具类（协议/配置/日志/校验）—— AGENT.MD 不可修改边界
 │   │   ├── protocol/         # Netty 协议编解码（帧 + JSON）
@@ -46,20 +46,20 @@ processor/
 
 ```bash
 # 常驻：连接 Manager，注册/心跳，接收并执行任务
-go run ./cmd/restto-client daemon
+go run ./client/restto daemon
 
 # —— agent 调用入口（按名调度 + JSON 参数）——
-go run ./cmd/restto-client tool list                                  # 发现可用工具
-go run ./cmd/restto-client tool schema backup_file                    # 查参数格式
-go run ./cmd/restto-client tool run backup_file \
+go run ./client/restto tool list                                  # 发现可用工具
+go run ./client/restto tool schema backup_file                    # 查参数格式
+go run ./client/restto tool run backup_file \
   --args '{"path":"/data","dest":"/backup/data.tar.gz"}'             # JSON 参数运行
 # 参数来源： --args '<json>' / --args-file ./a.json / --args -（stdin）/ 不给则 {}
 
 # —— 兼容旧命令 ——
-go run ./cmd/restto-client backup-file --path /data --dest /backup/data.tar.gz
-go run ./cmd/restto-client backup-mysql --host 127.0.0.1 --port 3306 \
+go run ./client/restto backup-file --path /data --dest /backup/data.tar.gz
+go run ./client/restto backup-mysql --host 127.0.0.1 --port 3306 \
   --user root --password *** --database mydb --dest /backup/mydb.sql.gz
-go run ./cmd/restto-client run-module backup_file \
+go run ./client/restto run-module backup_file \
   --args '{"path":"/data","dest":"/backup/data.tar.gz"}'
 ```
 

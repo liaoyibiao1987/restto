@@ -1,6 +1,6 @@
 # internal/tools（工具注册中心）
 
-把各工具包聚合为一个统一的注册表，供 `cmd/restto-client` 调度。
+把各工具包聚合为一个统一的注册表，供 `client/restto` 调度。
 
 ## 职责
 
