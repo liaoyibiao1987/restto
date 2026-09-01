@@ -1,8 +1,10 @@
-// Package backupfile 实现 backup_file 工具：tar + gzip 打包文件 / 目录为 .tar.gz 备份产物。
+// backupfile 是独立的第三方可执行程序：
+// tar + gzip 打包文件 / 目录为 .tar.gz 备份产物。
 //
-// 实现 common.Tool，工具名 backup_file（与服务端下发的 module 名一致）。
-// 底层 BackupPath 为纯函数，便于单独复用与单测。
-package backupfile
+// 实现 common.Tool，工具名 backup_file（与服务端下发的 module 名一致）；
+// 由 restto-client 经 internal/runner 以子进程调度（约定见 clis/README.md），
+// 也可单独编译、单独执行。底层 BackupPath 为纯函数，便于单独复用与单测。
+package main
 
 import (
 	"archive/tar"

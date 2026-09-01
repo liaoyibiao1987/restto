@@ -1,9 +1,10 @@
-// Package backupmysql 实现 backup_mysql 工具：调用系统 mysqldump 导出数据库，
-// 再 gzip 压缩为 .sql.gz 产物。
+// backupmysql 是独立的第三方可执行程序：
+// 调用系统 mysqldump 导出数据库，再 gzip 压缩为 .sql.gz 产物。
 //
-// 实现 common.Tool，工具名 backup_mysql（与服务端下发的 module 名一致）。
-// 要求目标机已安装 mysqldump 并在 PATH 中可用。
-package backupmysql
+// 实现 common.Tool，工具名 backup_mysql（与服务端下发的 module 名一致）；
+// 由 restto-client 经 internal/runner 以子进程调度（约定见 clis/README.md），
+// 也可单独编译、单独执行。要求目标机已安装 mysqldump 并在 PATH 中可用。
+package main
 
 import (
 	"bytes"

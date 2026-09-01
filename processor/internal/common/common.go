@@ -55,6 +55,10 @@ func (e *ToolError) Error() string {
 	switch e.Kind {
 	case KindSubprocess:
 		return fmt.Sprintf("subprocess failed (code=%d): %s", e.Code, e.Message)
+	case KindExternal, KindNotFound:
+		// 外部 CLI 回传 / 模块未找到：Message 原文透传，
+		// 保证跨进程边界后错误文案（服务端可见）不变形。
+		return e.Message
 	default:
 		return fmt.Sprintf("%s error: %s", e.Kind, e.Message)
 	}
@@ -95,8 +99,8 @@ type ToolInfo struct {
 	ParamsSchema map[string]any `json:"params_schema"`
 }
 
-// Tool 工具契约：所有工具实现此接口，由 tools.Registry() 统一注册，
-// cli / daemon 统一调度。
+// Tool 工具契约：所有 CLI（clis/*）实现此接口，经 runner 以子进程调度，
+// cli / daemon 统一走同一链路。
 type Tool interface {
 	// Info 返回工具元信息。
 	Info() ToolInfo

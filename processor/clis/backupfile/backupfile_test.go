@@ -1,4 +1,4 @@
-package backupfile
+package main
 
 import (
 	"archive/tar"

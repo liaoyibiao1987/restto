@@ -1,4 +1,4 @@
-package backupmysql
+package main
 
 import (
 	"context"

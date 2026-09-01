@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(cargo test *)",
-      "Bash(mvn -q -DskipTests compile)"
+      "Bash(mvn -q -DskipTests compile)",
+      "Bash(go build *)",
+      "Bash(go test *)"
     ]
   }
 }

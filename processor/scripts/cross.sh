@@ -2,7 +2,8 @@
 # 交叉编译：为多个目标平台构建优化二进制并打成归档到 dist/。
 #
 # Go 原生支持交叉编译：GOOS/GOARCH 直接切换，无需外部交叉工具链（CGO 关闭），
-# 产物为对应平台的静态可执行文件。
+# 产物为对应平台的静态可执行文件。每个目标产出主程序 + clis/ 下全部第三方 CLI，
+# 归档保留目录树（restto-client 与 clis/ 同级），解压即得完整部署目录。
 #
 # 用法：
 #   ./scripts/cross.sh                              # 编译全部默认目标
@@ -52,15 +53,30 @@ for t in "${TARGETS[@]}"; do
   out="dist-bin/${goos}-${goarch}"
 
   echo "==> [$t] ($name)"
-  if CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
-      go build -ldflags "-s -w" -trimpath -o "$out/$bin" ./client/restto; then
+  rm -rf "$out"
+  mkdir -p "$out/clis"
+  build_ok=true
+  CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
+      go build -ldflags "-s -w" -trimpath -o "$out/$bin" ./client/restto || build_ok=false
+  if $build_ok; then
+    # 逐个构建第三方 CLI（windows 加 .exe 后缀）。
+    for d in clis/*/; do
+      cli="$(basename "$d")"
+      [[ "$goos" == "windows" ]] && cli="${cli}.exe"
+      CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
+          go build -ldflags "-s -w" -trimpath -o "$out/clis/$cli" "./$d" || build_ok=false
+    done
+  fi
+
+  if $build_ok; then
     pkg="$DIST/restto-client-$VERSION-$name"
     if [[ "$goos" == "windows" ]] && command -v zip >/dev/null 2>&1; then
-      zip -j "$pkg.zip" "$out/$bin" >/dev/null
+      # zip 保留目录树（-j 会压平 clis/，禁用）。
+      ( cd "$out" && zip -qr "$OLDPWD/$pkg.zip" . )
       echo "    → $pkg.zip"
     else
       [[ "$goos" == "windows" ]] && echo "    ! 未安装 zip，改打 .tar.gz（Windows 10+ 自带 tar 可解）"
-      tar -czf "$pkg.tar.gz" -C "$out" "$bin"
+      tar -czf "$pkg.tar.gz" -C "$out" .
       echo "    → $pkg.tar.gz"
     fi
     ok=$((ok+1))

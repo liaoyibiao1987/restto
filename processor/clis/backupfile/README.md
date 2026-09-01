@@ -1,6 +1,8 @@
-# backup_file 工具
+# backup_file CLI（独立可执行程序）
 
 将指定的**文件或目录**打包为 `.tar.gz` 备份产物，并计算 sha256 校验值。
+`clis/backupfile` 是独立第三方程序：可单独编译、单独执行，
+由 restto-client 经 runner 以子进程调度（约定见 [`../README.md`](../README.md)）。
 
 ## 功能
 
@@ -17,31 +19,32 @@
 | `path` | string | 是   | 待备份的源文件 / 目录绝对路径     |
 | `dest` | string | 是   | 产物路径，建议以 `.tar.gz` 结尾   |
 
-参数 JSON Schema 可通过 `restto-client tool schema backup_file` 实时获取。
+参数 JSON Schema 可通过 `restto-client tool schema backup_file` 或
+`./backupfile info` 实时获取。
 
 ## 调用方式
 
 ```bash
-# 1) 通过 agent 友好的 tool run（推荐）
+# 1) 直接执行（独立程序）
+./backupfile run --args '{"path":"/data","dest":"/backup/data.tar.gz"}'
+
+# 2) 经 restto-client 调度（服务端 TASK_COMMAND 走同一链路）
 restto-client tool run backup_file \
   --args '{"path":"/data","dest":"/backup/data.tar.gz"}'
 
-# 2) 兼容旧命令
-restto-client backup-file --path /data --dest /backup/data.tar.gz
-
 # 3) 参数从 stdin（--args -）
-echo '{"path":"/data","dest":"/backup/data.tar.gz"}' | \
-  restto-client tool run backup_file --args -
+echo '{"path":"/data","dest":"/backup/data.tar.gz"}' | ./backupfile run --args -
 ```
 
-### 输出（结构化 JSON，便于 agent 解析）
+### 输出（结构化 JSON，便于 agent / runner 解析）
 
 成功：
 ```json
 { "ok": true, "tool": "backup_file",
   "output": { "file_path": "/backup/data.tar.gz", "size": 1234, "checksum": "…" } }
 ```
-失败：`ok=false`，`error` 字段给出原因，退出码 `1`。
+失败：`ok=false`，`error` 字段给出原因，退出码 `1`；用法错误退出码 `2`。
+stdout 只输出单个 JSON 文档，日志一律写 stderr。
 
 ## 注意事项
 
@@ -52,8 +55,9 @@ echo '{"path":"/data","dest":"/backup/data.tar.gz"}' | \
 ## 编译 / 测试
 
 ```bash
-go test ./internal/backupfile/        # 本包单测
-go build ./...                        # 全量构建
+go build -o backupfile ./clis/backupfile   # 单独编译本 CLI
+go test ./clis/backupfile/                 # 本包单测
+go build ./...                             # 全量构建
 ```
 
-> 多平台可执行文件（`restto-client` 整体）的交叉编译见仓库根 `scripts/cross.sh`。
+> 多平台可执行文件（主程序 + 全部 CLI）的交叉编译见仓库根 `scripts/cross.sh`。

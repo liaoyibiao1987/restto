@@ -2,7 +2,7 @@
 - 项目类型：基于go和springboot的分布式服务器数据备份系统
 - go在client端实现，springboot在manager端实现，netty作为通信框架
 - go实现纯静态编译（CGO_ENABLED=0），各个项目实现独立，通过命令行参数传递功能模块名称，服务端根据功能模块名称调用对应的功能模块
-  - processor目录存放各个功能模块的代码（Go module：cmd + internal）
+  - processor目录存放客户端代码（Go module）：client/restto 为中间人主程序（不含备份逻辑，经 runner 子进程调度外部 CLI）；clis/ 为独立第三方可执行程序（可单独编译执行，备份能力在此实现）；internal/ 仅共用模块（common/cliargs/runner/upgrade/daemon/core）
   - manager/web目录存放springboot的代码
   - manager/client目录存放vue的前端代码
 - 核心技术栈：go + vue + springboot + netty + mysql
